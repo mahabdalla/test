@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="construction_employee_res_partner_form" model="ir.ui.view">
+            <field name="name">construction.employee.res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//span[@name='address_name']" position="before">
+                    <field name="is_construction_company"/>
+                    <field name="is_builder"/>
+                    <field name="employee_type" widget="radio" options="{'horizontal': true}"/>
+                    <field name="role_id" required="employee_type"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="employee_engineer_action" model="ir.actions.act_window">
+            <field name="name">Engineer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('employee_type','=','engineer')]</field>
+            <field name="context">{'default_employee_type':'engineer'}</field>
+            <field name="view_mode">kanban,tree,form,search,activity</field>
+        </record>
+        <record id="employee_architect_action" model="ir.actions.act_window">
+            <field name="name">Architect</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('employee_type','=','architect')]</field>
+            <field name="context">{'default_employee_type':'architect'}</field>
+            <field name="view_mode">kanban,tree,form,search,activity</field>
+        </record>
+        <record id="employee_manager_action" model="ir.actions.act_window">
+            <field name="name">Manager</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('employee_type','=','manager')]</field>
+            <field name="context">{'default_employee_type':'manager'}</field>
+            <field name="view_mode">kanban,tree,form,search,activity</field>
+        </record>
+        <record id="construction_builder_action" model="ir.actions.act_window">
+            <field name="name">Owners</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('is_builder','=','manager')]</field>
+            <field name="context">{'default_is_builder':'manager'}</field>
+            <field name="view_mode">kanban,tree,form,search,activity</field>
+        </record>
+        <record id="construction_customer_company_action" model="ir.actions.act_window">
+            <field name="name">Owners</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('is_construction_company','=',True)]</field>
+            <field name="context">{'default_is_construction_company':True}</field>
+            <field name="view_mode">kanban,tree,form,search,activity</field>
+        </record>
+    </data>
+</flectra>

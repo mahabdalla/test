@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="view_import_task_library_wizard_form" model="ir.ui.view">
+            <field name="name">construction.import.task.library.wizard.form</field>
+            <field name="model">construction.import.task.library.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Import Task Library to Phase">
+                    <sheet>
+                        <group>
+                            <field name="task_library_id" required="1"/>
+                            <field name="phase_id" readonly="1"/>
+                        </group>
+                        <group string="Import Options">
+                            <field name="import_materials"/>
+                            <field name="import_equipment"/>
+                            <field name="import_labor"/>
+                            <field name="import_overhead"/>
+                            <field name="import_subcontractor"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_import" string="Import" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</flectra>
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="construction_employee_role_tree_view" model="ir.ui.view">
+            <field name="name">construction.employee.role.tree.view</field>
+            <field name="model">construction.employee</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="construction_employee_action" model="ir.actions.act_window">
+            <field name="name">Employee Role</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.employee</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+    </data>
+</flectra>

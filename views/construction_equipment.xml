@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="construction_equipment_form_inherit_view" model="ir.ui.view">
+            <field name="name">construction.equipment.form.view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='purchase_ok']" position="after">
+                    <span class="d-inline-block">
+                        <field name="is_equipment"/>
+                        <label for="is_equipment"/>
+                    </span>
+                    <span class="d-inline-block">
+                        <field name="is_material"/>
+                        <label for="is_material"/>
+                    </span>
+                    <span class="d-inline-block">
+                        <field name="is_expense_product"/>
+                        <label for="is_expense_product"/>
+                    </span>
+                </xpath>
+            </field>
+        </record>
+        <record id="construction_equipment_action" model="ir.actions.act_window">
+            <field name="name">Equipment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('is_equipment','=',True),('type','=','product')]</field>
+            <field name="context">{'default_is_equipment':True,'default_type':'product'}</field>
+        </record>
+        <record id="construction_material_action" model="ir.actions.act_window">
+            <field name="name">Material</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('is_material','=',True),('type','=','product')]</field>
+            <field name="context">{'default_is_material':True,'default_type':'product'}</field>
+        </record>
+        <record id="construction_expense_action" model="ir.actions.act_window">
+            <field name="name">Expense</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('is_expense_product','=',True),('type','=','service')]</field>
+            <field name="context">{'default_is_expense_product':True,'default_type':'service'}</field>
+        </record>
+    </data>
+</flectra>

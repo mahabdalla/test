@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="construction_project_form_inherit" model="ir.ui.view">
+            <field name="name">construction.project.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_approve_project" type="object" string="Approve" class="btn-primary" invisible="project_state != 'draft'"/>
+                    <button name="action_cancel_project" type="object" string="Cancel" class="btn-danger" invisible="project_state == 'cancel'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="project_state != 'cancel'"/>
+                    <field name="project_state" widget="statusbar" statusbar_visible="draft,approved" invisible="not construction_id"/>
+                </xpath>
+                <xpath expr="//field[@name='label_tasks']" position="after">
+                    <field name="construction_id"/>
+                    <field name="site_id" invisible="parent_id"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="parent_id" options="{'no_create_edit': True}" 
+                           domain="[('parent_id', '=', False), ('construction_id', '!=', False), ('site_id', '!=', False), ('project_state', '=', 'approved')]"/>
+                    <field name="site_id" readonly="1" invisible="not parent_id" string="Site Project"/>
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_sub_projects" icon="fa-sitemap" invisible="project_state != 'approved'">
+                            <field name="child_count" widget="statinfo" string="Sub Projects"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_phases_from_project" icon="fa-list-alt">
+                            <field name="phase_count" widget="statinfo" string="Phases"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_progress_billing" icon="fa-file-invoice">
+                            <field name="child_count" invisible="1"/>
+                            <span class="o_stat_text">Progress Billing</span>
+                        </button>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="construction_project_action" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.project</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="project.view_project_kanban"/>
+            <field name="domain">[('construction_id','!=',False)]</field>
+        </record>
+        <record id="action_sub_projects_from_project" model="ir.actions.act_window">
+            <field name="name">Sub Projects</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.project</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('parent_id', '=', active_id), ('construction_id', '!=', False), ('site_id', '!=', False)]</field>
+            <field name="context">{'default_parent_id': active_id}</field>
+        </record>
+        <!-- Removed action_all_sub_projects - Sub Projects should only be accessed from parent project -->
+        <!--Project Task-->
+        <record id="construction_project_task_form_inherit" model="ir.ui.view">
+            <field name="name">construction.project.task.form.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="construction_id" force_save="1"/>
+                    <field name="is_inspection_task" readonly="1" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="labours_ids" widget="many2many_tags"
+                           options="{'color_field': 'color'}"/>
+                </xpath>
+            </field>
+        </record>
+        <!--Project Task Stages-->
+        <record id="construction_task_stage_form_inherit" model="ir.ui.view">
+            <field name="name">construction.task.stage.form.inherit</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_edit"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="is_construction_stages"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="project_task_stages_action" model="ir.actions.act_window">
+            <field name="name">Task Stages</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.task.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_construction_stages','=',True)]</field>
+            <field name="context">{'default_is_construction_stages':True}</field>
+        </record>
+        <!--Meeting-->
+        <record id="construction_meeting_form_inherit" model="ir.ui.view">
+            <field name="name">construction.meeting.form.inherit</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="is_construction_meeting" invisible="1"/>
+                    <h3>
+                        <div class="oe_title">
+                            <label for="construction_id" invisible="not is_construction_meeting"/>
+                            <h4>
+                                <field name="company_id" invisible="1"/>
+                                <field name="construction_id"
+                                       invisible="not is_construction_meeting"
+                                       required="is_construction_meeting"/>
+                            </h4>
+                        </div>
+                    </h3>
+                </xpath>
+            </field>
+        </record>
+        <record id="construction_meeting_action" model="ir.actions.act_window">
+            <field name="name">Construction Meeting</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">calendar.event</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="domain">[('construction_id','!=',False),('is_construction_meeting','=',True)]</field>
+            <field name="context">{'default_is_construction_meeting':True}</field>
+        </record>
+        <!--Time Sheet-->
+        <record id="construction_timesheet_action" model="ir.actions.act_window">
+            <field name="name">Timesheets</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_mode">tree,form,kanban,pivot</field>
+            <field name="search_view_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="domain">[('project_id', '!=', False)]</field>
+            <field name="context">{'search_default_groupby_project':1}
+            </field>
+        </record>
+    </data>
+</flectra>

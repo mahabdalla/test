@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="job_costing_form_view" model="ir.ui.view">
+            <field name="name">job.costing.form.view</field>
+            <field name="model">job.costing</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="planning,job_order"/>
+                        <button name="action_create_job_order" type="object" string="Create Job Order"
+                                class="btn btn-primary" invisible="job_order_id"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn btn-danger"
+                                invisible="state == 'job_order'"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Title"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="site_id"/>
+                                <field name="job_order_id" invisible="not job_order_id"/>
+                                <label for="cost_of_construction" string="Cost of Construction"/>
+                                <div>
+                                    <span class="d-inline-block">
+                                        <span class="d-inline-block" style="margin-right:45px;">
+                                            <field name="area_plot" required="1" placeholder="Area of Plot"/>
+                                            <div class="font-italic text-muted">
+                                                Area of Plot(sq ft.)
+                                            </div>
+                                        </span>
+                                        <span class="d-inline-block">
+                                            <field name="construction_rate" required="1"
+                                                   placeholder="Construction Rate per sq ft."/>
+                                            <div class="font-italic text-muted">
+                                                Construction Rate per sq ft.
+                                            </div>
+                                        </span>
+                                    </span>
+                                    <br/>
+                                    <strong>
+                                        <field name="cost_of_construction"/>
+                                    </strong>
+                                </div>
+                                <label for="start_date" string="Estimate Time"/>
+                                <div class="o_row">
+                                    <field name="start_date" widget="daterange" nolabel="1" class="oe_inline"
+                                           options="{'related_end_date': 'end_date'}"/>
+                                    <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                    <field name="end_date" widget="daterange" nolabel="1" class="oe_inline"
+                                           options="{'related_start_date': 'start_date'}"/>
+                                </div>
+                                <label for="estimate_cost"/>
+                                <div>
+                                    <span class="d-inline-block">
+                                        <span class="d-inline-block" style="margin-right:45px;">
+                                            <field name="estimate_cost" required="1"/>
+                                            <div class="font-italic text-muted">
+                                                Estimate Cost is Combined of Material, Equipment, Labours &amp;
+                                                Employees and Cost of Construction
+                                            </div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </group>
+                            <group>
+                                <span class="o_form_label o_td_label" name="address_name">
+                                    <b>Address</b>
+                                </span>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State"
+                                           options="{'no_open': True, 'no_quick_create': True}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options="{'no_open': True, 'no_quick_create': True}"/>
+                                </div>
+                                <field name="longitude" placeholder="Longitude"/>
+                                <field name="latitude" placeholder="Latitude"/>
+                            </group>
+                        </group>
+                        <div style="width: 100%;margin-top:15px;font-size:24px;padding:3px;padding-left:10px;text-align:center;">
+                            <strong>Project Estimation</strong>
+                        </div>
+                        <notebook>
+                            <page string="Materials">
+                                <field name="material_ids" nolabel="1">
+                                    <tree editable="top">
+                                        <field name="material_id" required="1"/>
+                                        <field name="uom_id" required="1"/>
+                                        <field name="qty" required="1"/>
+                                        <field name="cost" required="1"/>
+                                        <field name="total_cost"/>
+                                    </tree>
+                                </field>
+                                <div class="oe_subtotal_footer oe_right" style="text-align: right; margin-top: 10px;">
+                                    <field name="material_total" readonly="1" force_save="1" nolabel="1"
+                                           class="oe_subtotal_footer_separator"/>
+                                </div>
+                            </page>
+                            <page string="Equipments">
+                                <field name="equipment_ids" nolabel="1">
+                                    <tree editable="top">
+                                        <field name="equipment_id" required="1"/>
+                                        <field name="cost_type" required="1"/>
+                                        <field name="qty" required="1"/>
+                                        <field name="cost" required="1"/>
+                                        <field name="total_cost"/>
+                                    </tree>
+                                </field>
+                                <div class="oe_subtotal_footer oe_right" style="text-align: right; margin-top: 10px;">
+                                    <field name="equipment_total" readonly="1" force_save="1" nolabel="1"
+                                           class="oe_subtotal_footer_separator"/>
+                                </div>
+                            </page>
+                            <page string="Labours &amp; Employees">
+                                <field name="eng_labour_ids" nolabel="1">
+                                    <tree editable="top">
+                                        <field name="name" required="1"/>
+                                        <field name="role_id" required="1"/>
+                                        <field name="no_of_person" required="1"/>
+                                        <field name="cost" required="1"/>
+                                        <field name="total_cost"/>
+                                    </tree>
+                                </field>
+                                <div class="oe_subtotal_footer oe_right" style="text-align: right; margin-top: 10px;">
+                                    <field name="eng_labour_total" readonly="1" force_save="1" nolabel="1"
+                                           class="oe_subtotal_footer_separator"/>
+                                </div>
+                            </page>
+                            <page string="Description">
+                                <field name="desc" nolabel="1" placeholder="Notes." widget="text"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="job_costing_tree_view" model="ir.ui.view">
+            <field name="name">job_costing.tree.view</field>
+            <field name="model">job.costing</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="site_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="estimate_cost"/>
+                </tree>
+            </field>
+        </record>
+        <record id="job_costing_search_view" model="ir.ui.view">
+            <field name="name">job_costing_search_view</field>
+            <field name="model">job.costing</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="site_id"/>
+                    <field name="job_order_id"/>
+                    <field name="street"/>
+                    <field name="street2"/>
+                    <filter string="Site" name="site" domain="[]" context="{'group_by':'site_id'}"/>
+                    <filter string="State" name="state" domain="[]" context="{'group_by':'state_id'}"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="job_costing_action" model="ir.actions.act_window">
+            <field name="name">Job Costing</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">job.costing</field>
+            <field name="view_mode">tree,form,search</field>
+        </record>
+    </data>
+</flectra>

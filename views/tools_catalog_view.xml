@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="view_tools_catalog_tree" model="ir.ui.view">
+            <field name="name">construction.tools.catalog.tree</field>
+            <field name="model">construction.tools.catalog</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category_id"/>
+                    <field name="vendor_id"/>
+                    <field name="unit_price"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_tools_catalog_form" model="ir.ui.view">
+            <field name="name">construction.tools.catalog.form</field>
+            <field name="model">construction.tools.catalog</field>
+            <field name="arch" type="xml">
+                <form string="Tools Catalog">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="category_id"/>
+                                <field name="vendor_id"/>
+                            </group>
+                            <group>
+                                <field name="unit_price"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="image" widget="image"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tools_category_tree" model="ir.ui.view">
+            <field name="name">construction.tools.category.tree</field>
+            <field name="model">construction.tools.category</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_tools_category_form" model="ir.ui.view">
+            <field name="name">construction.tools.category.form</field>
+            <field name="model">construction.tools.category</field>
+            <field name="arch" type="xml">
+                <form string="Tools Category">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <notebook>
+                            <page string="Tools">
+                                <field name="tool_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="unit_price"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tools_catalog" model="ir.actions.act_window">
+            <field name="name">Tools Catalog</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.tools.catalog</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_tools_category" model="ir.actions.act_window">
+            <field name="name">Tools Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.tools.category</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Configuration Settings View - Commented out due to xpath issues in Flectra 3.0 -->
+        <!-- Settings can be added manually through Settings menu or can be implemented later -->
+        <!--
+        <record id="view_construction_config_settings_form" model="ir.ui.view">
+            <field name="name">construction.config.settings.form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='o_setting_container']/div[2]" position="inside">
+                    <div class="app_settings_block" data-string="Construction Management" string="Construction Management" data-key="construction_management">
+                        <h2>Construction Management Settings</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="email_notification_enabled"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Enable Email Notifications</span>
+                                    <div class="text-muted">
+                                        Enable email notifications for construction management activities
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="email_on_work_order_approval"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Email on Work Order Approval</span>
+                                    <div class="text-muted">
+                                        Send email when work order is approved
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="email_on_qc_approval"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Email on QC Approval</span>
+                                    <div class="text-muted">
+                                        Send email when quality check is approved
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="email_on_material_requisition"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Email on Material Requisition</span>
+                                    <div class="text-muted">
+                                        Send email when material requisition is created
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="email_on_subcontract_approval"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Email on Subcontract Approval</span>
+                                    <div class="text-muted">
+                                        Send email when subcontract is approved
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        -->
+    </data>
+</flectra>
+

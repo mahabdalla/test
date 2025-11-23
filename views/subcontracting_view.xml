@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="view_subcontract_tree" model="ir.ui.view">
+            <field name="name">construction.subcontract.tree</field>
+            <field name="model">construction.subcontract</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="partner_id"/>
+                    <field name="subcontract_type"/>
+                    <field name="amount_total"/>
+                    <field name="state" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_subcontract_form" model="ir.ui.view">
+            <field name="name">construction.subcontract.form</field>
+            <field name="model">construction.subcontract</field>
+            <field name="arch" type="xml">
+                <form string="Subcontract">
+                    <header>
+                        <button name="action_fetch_from_wbs" type="object" string="Fetch from WBS" class="oe_link" invisible="state != 'draft' or subcontract_type != 'labor'"/>
+                        <button name="action_send_for_qc" type="object" string="Send for QC" class="oe_link" invisible="state != 'draft'"/>
+                        <button name="action_create_purchase_order" type="object" string="Create PO" class="btn-primary" invisible="state != 'approved'"/>
+                        <button name="action_create_bill" type="object" string="Create Bill" invisible="state != 'approved'"/>
+                        <button name="action_view_bills" type="object" string="Bills" class="oe_stat_button" icon="fa-file-invoice">
+                            <field name="bill_count" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_ra_billings" type="object" string="RA Billings" class="oe_stat_button" icon="fa-list">
+                            <field name="ra_billing_count" widget="statinfo"/>
+                        </button>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="project_id"/>
+                                <field name="phase_id"/>
+                                <field name="work_order_id"/>
+                                <field name="partner_id"/>
+                                <field name="subcontract_type"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="quantity"/>
+                                <field name="unit_price"/>
+                                <field name="subtotal" readonly="1"/>
+                                <field name="retention_percent"/>
+                                <field name="retention_amount" readonly="1"/>
+                                <field name="amount_total" readonly="1" class="oe_read_only"/>
+                                <field name="qc_approved" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" nolabel="1"/>
+                            </page>
+                            <page string="Payment Schedule">
+                                <field name="payment_schedule_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="percentage"/>
+                                        <field name="amount" readonly="1"/>
+                                        <field name="date"/>
+                                        <field name="paid" widget="boolean_toggle"/>
+                                        <field name="payment_date" readonly="1"/>
+                                        <button name="action_mark_paid" type="object" string="Mark Paid" icon="fa-check" invisible="paid"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Quality Checks">
+                                <field name="qc_check_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="date"/>
+                                        <field name="passed"/>
+                                        <field name="failed"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_ra_billing_tree" model="ir.ui.view">
+            <field name="name">construction.ra.billing.tree</field>
+            <field name="model">construction.ra.billing</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="subcontract_id"/>
+                    <field name="completed_quantity"/>
+                    <field name="amount_total"/>
+                    <field name="state" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_ra_billing_form" model="ir.ui.view">
+            <field name="name">construction.ra.billing.form</field>
+            <field name="model">construction.ra.billing</field>
+            <field name="arch" type="xml">
+                <form string="RA Billing">
+                    <header>
+                        <button name="action_create_purchase_order" type="object" string="Create PO" class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_create_bill" type="object" string="Create Bill" invisible="state != 'po_created'"/>
+                        <button name="action_create_certificate" type="object" string="Create Certificate" invisible="state != 'billed'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="subcontract_id"/>
+                                <field name="project_id" readonly="1"/>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="completed_quantity"/>
+                                <field name="unit_price" readonly="1"/>
+                                <field name="subtotal" readonly="1"/>
+                                <field name="retention_percent" readonly="1"/>
+                                <field name="retention_amount" readonly="1"/>
+                                <field name="amount_total" readonly="1" class="oe_read_only"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_work_completion_certificate_form" model="ir.ui.view">
+            <field name="name">construction.work.completion.certificate.form</field>
+            <field name="model">construction.work.completion.certificate</field>
+            <field name="arch" type="xml">
+                <form string="Work Completion Certificate">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="project_id" readonly="1"/>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="completed_quantity" readonly="1"/>
+                                <field name="amount_total" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_subcontract" model="ir.actions.act_window">
+            <field name="name">Subcontracting</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.subcontract</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_ra_billing" model="ir.actions.act_window">
+            <field name="name">RA Billing</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.ra.billing</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</flectra>
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="construction_inspection_form_view" model="ir.ui.view">
+            <field name="name">construction_inspection_form.view</field>
+            <field name="model">construction.inspection</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="name" required="1" placeholer="Title"/>
+                        </group>
+                        <group>
+                            <field name="deadline" required="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="construction_id" invisible="1"/>
+                            <field name="user_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="desc" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button string="Create Task" type="object" class="btn btn-outline-success"
+                                name="action_create_task"/>
+                        <button string="Cancel" special="cancel" class="btn btn-outline-danger"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="construction_inspection_action" model="ir.actions.act_window">
+            <field name="name">Construction Inspection</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.inspection</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</flectra>

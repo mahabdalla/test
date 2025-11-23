@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="construction_site_form_view" model="ir.ui.view">
+            <field name="name">construction.site.form.view</field>
+            <field name="model">construction.site</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_create_job_costing" class="btn btn-outline-primary" type="object"
+                                string="Job Costing" invisible="job_costing_id"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_gmap_location"
+                                    icon="fa-location-arrow"
+                                    string="Map Location"
+                                    invisible="not longitude and not latitude">
+                            </button>
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_construction_catalog"
+                                    icon="fa-picture-o">
+                                <field name="catalog_count"
+                                       string='Catalog'
+                                       widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_construction_certificate"
+                                    icon="fa-file-text">
+                                <field name="certificate_count"
+                                       string='Certificate'
+                                       widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" required="1" placeholder="Title"/>
+                            </h1>
+                            <h5>
+
+                            </h5>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="site_type_id" required="1"/>
+                            </group>
+                            <group invisible="not job_costing_id">
+                                <field name="job_costing_id" readonly="1" force_save="1"
+                                       invisible="not job_costing_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Address">
+                                <span class="o_form_label o_td_label" name="address_name">
+                                    <b>Address</b>
+                                </span>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State"
+                                           options="{'no_open': True, 'no_quick_create': True}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options="{'no_open': True, 'no_quick_create': True}"/>
+                                </div>
+                                <field name="longitude" placeholder="Longitude"/>
+                                <field name="latitude" placeholder="Latitude"/>
+                            </group>
+                            <group string="Contact Details">
+                                <field name="phone" widget="phone" placeholder="965-8569-874"/>
+                                <field name="email" widget="email" placeholder="abc@gmail.com"/>
+                                <field name="website"/>
+                                <field name="tax" placeholder="vat"/>
+                                <field name="licence"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Owners">
+                                <field name="owners_ids">
+                                    <kanban class="o_res_partner_kanban" sample="1">
+                                        <field name="id"/>
+                                        <field name="color"/>
+                                        <field name="display_name"/>
+                                        <field name="title"/>
+                                        <field name="email"/>
+                                        <field name="parent_id"/>
+                                        <field name="is_company"/>
+                                        <field name="function"/>
+                                        <field name="phone"/>
+                                        <field name="street"/>
+                                        <field name="street2"/>
+                                        <field name="zip"/>
+                                        <field name="city"/>
+                                        <field name="country_id"/>
+                                        <field name="mobile"/>
+                                        <field name="state_id"/>
+                                        <field name="category_id"/>
+                                        <field name="avatar_128"/>
+                                        <field name="type"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                                                    <t t-if="!record.is_company.raw_value">
+                                                        <t t-set="background_image"
+                                                           t-value="kanban_image('res.partner', 'avatar_128', record.id.raw_value)"/>
+                                                        <div class="o_kanban_image_fill_left d-none d-md-block"
+                                                             t-attf-style="background-image:url('#{background_image}')">
+                                                            <img class="o_kanban_image_inner_pic"
+                                                                 t-if="record.parent_id.raw_value"
+                                                                 t-att-alt="record.parent_id.value"
+                                                                 t-att-src="kanban_image('res.partner', 'avatar_128', record.parent_id.raw_value)"/>
+                                                        </div>
+                                                        <div class="o_kanban_image d-md-none"
+                                                             t-attf-style="background-image: url(#{background_image})">
+                                                            <img class="o_kanban_image_inner_pic"
+                                                                 t-if="record.parent_id.raw_value"
+                                                                 t-att-alt="record.parent_id.value"
+                                                                 t-att-src="kanban_image('res.partner', 'avatar_128', record.parent_id.raw_value)"/>
+                                                        </div>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <div class="o_kanban_image_fill_left o_kanban_image_full"
+                                                             t-attf-style="background-image: url(#{kanban_image('res.partner', 'avatar_128', record.id.raw_value)})"
+                                                             role="img"/>
+                                                    </t>
+                                                    <div class="oe_kanban_details d-flex flex-column">
+                                                        <strong class="o_kanban_record_title oe_partner_heading">
+                                                            <field name="display_name"/>
+                                                        </strong>
+                                                        <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                                        <ul>
+                                                            <li t-if="record.parent_id.raw_value and !record.function.raw_value">
+                                                                <field name="parent_id"/>
+                                                            </li>
+                                                            <li t-if="!record.parent_id.raw_value and record.function.raw_value">
+                                                                <field name="function"/>
+                                                            </li>
+                                                            <li t-if="record.parent_id.raw_value and record.function.raw_value">
+                                                                <field name="function"/>
+                                                                at
+                                                                <field name="parent_id"/>
+                                                            </li>
+                                                            <li t-if="record.city.raw_value or record.country_id.raw_value">
+                                                                <t t-if="record.city.raw_value">
+                                                                    <field name="city"/>
+                                                                    <t t-if="record.country_id.raw_value">,</t>
+                                                                </t>
+                                                                <t t-if="record.country_id.raw_value">
+                                                                    <field name="country_id"/>
+                                                                </t>
+                                                            </li>
+                                                            <li t-if="record.email.raw_value" class="o_text_overflow">
+                                                                <field name="email"/>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="o_row">
+                                                            <span class="oe_kanban_partner_links"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Amenities">
+                                <h3 style="color:#714B67;">
+                                    <strong>Amenities</strong>
+                                </h3>
+                                <field name="amenities_ids">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="title"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click border-bottom rounded"
+                                                     style="width:130px;height:60px;">
+                                                    <div style="width:40%;float:left;display:inline-block;">
+                                                        <img alt="Avtar"
+                                                             t-att-src="kanban_image('construction.amenities','image',record.id.raw_value)"
+                                                             style="width:50px;height:40px;"/>
+                                                    </div>
+                                                    <div style="width:60%;float:right;display:inline-block;">
+                                                        <h5 style="color:#714B67;">
+                                                            <strong>
+                                                                <field name="title"/>
+                                                            </strong>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Site Map">
+                                <field name="site_image_ids">
+                                    <form>
+                                        <div class="oe_title float-left">
+                                            <label for="title"/>
+                                            <h1>
+                                                <field name="title" required="1"/>
+                                            </h1>
+                                        </div>
+                                        <div style="width:40%;height:40%;" class="float-right">
+                                            <field name="image" style="width:40%;height:40%;"
+                                                   class="img-thumbnail float-right"
+                                                   widget="image" required="1"/>
+                                        </div>
+                                    </form>
+                                    <kanban>
+                                        <field name="id"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click border-0"
+                                                     style="width:333px;margin-top: -5px;margin-bottom: 0px;margin-right:-14px;">
+                                                    <img alt="Avtar"
+                                                         t-att-src="kanban_image('construction.images','image',record.id.raw_value)"
+                                                         style="width:30rem;height:20rem;"
+                                                         class="img-thumbnail"/>
+                                                    <span style="font-size: 1.625rem;line-height: 1.625rem;min-height: 3.25rem;">
+                                                        <center style="background-color: whitesmoke;">
+                                                            <field name="title"/>
+                                                        </center>
+                                                    </span>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Description">
+                                <group>
+                                    <field name="desc" widget="html" nolabel="1" placeholder="Site Description"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="construction_site_tree_view" model="ir.ui.view">
+            <field name="name">construction.site.tree.view</field>
+            <field name="model">construction.site</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="site_type_id"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="state_id"/>
+                    <field name="country_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="construction_site_search_view" model="ir.ui.view">
+            <field name="name">construction.site.search.view</field>
+            <field name="model">construction.site</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="street"/>
+                    <field name="state_id"/>
+                    <field name="country_id"/>
+                    <filter string="Type" name="type" domain="[]" context="{'group_by':'site_type_id'}"/>
+                    <filter string="Job Costing" name="job_costing" domain="[]"
+                            context="{'group_by':'job_costing_id'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="construction_site_action" model="ir.actions.act_window">
+            <field name="name">Construction Site</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.site</field>
+            <field name="view_mode">tree,form,search</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Crete Construction Site.
+                </p>
+            </field>
+        </record>
+    </data>
+</flectra>

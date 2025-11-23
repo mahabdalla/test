@@ -1,0 +1,1112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="construction_details_form_view" model="ir.ui.view">
+            <field name="name">construction.details.form.view</field>
+            <field name="model">construction.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="stage" widget="statusbar" nolabel="1" options="{'clickable': '1'}"
+                               statusbar_visible="confirm,a_costing,in_progress,close,done"/>
+                        <button name="action_approved" string="Verify Document" type="object"
+                                class="btn btn-outline-success"
+                                invisible="stage in ['cancel', 'a_costing', 'in_progress', 'done', 'close']"/>
+                        <button name="action_start_construction" type="object" string="Start Construction"
+                                class="btn btn-success" invisible="stage != 'a_costing'"/>
+                        <button name="%(construction_inspection_action)d" type='action' string="Assign Inspection Task"
+                                class="btn btn-outline-dark" context="{'default_construction_id':active_id}"
+                                invisible="stage in ['confirm', 'a_costing', 'cancel']"/>
+                        <button name="action_complete" type="object" string="Complete" class="btn btn-success"
+                                invisible="stage != 'in_progress'"/>
+                        <button name="action_close_project" type="object" string="Close Project"
+                                class="btn btn-outline-success" invisible="stage != 'done'"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn btn-danger"
+                                invisible="stage in ['cancel', 'done', 'close']"/>
+
+                    </header>
+                    <sheet>
+                        <field name="project_id" invisible="1"/>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="action_view_construction_task"
+                                    icon="fa-tasks" invisible="not project_id">
+                                <field name="task_count" string="Tasks" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="object" name="action_view_sub_projects"
+                                    icon="fa-sitemap" invisible="not project_id">
+                                <field name="sub_project_count" string="Sub Projects" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="object" name="action_view_meeting" icon="fa-calendar">
+                                <field name="meeting_count" string="Meetings" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button"
+                                    type="object"
+                                    name="action_gmap_location"
+                                    icon="fa-location-arrow"
+                                    string="Map Location"
+                                    invisible="not longitude and not latitude">
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="site_id"/>
+                            <h1>
+                                <field name="site_id" required="1" placeholder="Title"/>
+                                <h4 style="color:#714B67;">
+                                    <field name="name" required="1" placeholder="Title"/>
+                                </h4>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="job_costing_id" readonly="1" force_save="1"/>
+                                <label for="customer_company_id"/>
+                                <div>
+                                    <field name="customer_company_id" required="1"/>
+                                        <div class="font-italic text-muted"
+                                         invisible="customer_company_id">
+                                        All Purchase Order will be directed to the Company(Customer)
+                                    </div>
+                                </div>
+                                <label for="start_date" string="Estimate Time"/>
+                                <div class="o_row">
+                                    <field name="start_date" widget="daterange" nolabel="1" class="oe_inline"
+                                           options="{'related_end_date': 'end_date'}"/>
+                                    <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                    <field name="end_date" widget="daterange" nolabel="1" class="oe_inline"
+                                           options="{'related_start_date': 'start_date'}"/>
+                                </div>
+                                <field name="project_id" readonly="1" force_save="1"
+                                       invisible="not project_id"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <label for="cost_of_construction" string="Cost of Construction"/>
+                                <div>
+                                    <span class="d-inline-block">
+                                        <span class="d-inline-block" style="margin-right:45px;">
+                                            <field name="area_plot" required="1" placeholder="Area of Plot"/>
+                                            <div class="font-italic text-muted">
+                                                Area of Plot(sq ft.)
+                                            </div>
+                                        </span>
+                                        <span class="d-inline-block">
+                                            <field name="construction_rate" required="1"
+                                                   placeholder="Construction Rate per sq ft."/>
+                                            <div class="font-italic text-muted">
+                                                Construction Rate per sq ft.
+                                            </div>
+                                        </span>
+                                    </span>
+                                    <br/>
+                                    <strong>
+                                        <field name="cost_of_construction"/>
+                                    </strong>
+                                </div>
+                                <field name="estimate_cost"/>
+                            </group>
+                            <group>
+                                <span class="o_form_label o_td_label" name="address_name">
+                                    <b>Address</b>
+                                </span>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State"
+                                           options="{'no_open': True, 'no_quick_create': True}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options="{'no_open': True, 'no_quick_create': True}"/>
+                                </div>
+                                <field name="longitude" readonly="1" force_save="1"/>
+                                <field name="latitude" readonly="1" force_save="1"/>
+                                <field name="scrap_id"
+                                       invisible="not scrap_id or stage in ['confirm', 'a_costing', 'in_progress', 'cancel']"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Documents"
+                                  invisible="stage == 'cancel'">
+                                <group>
+                                    <group>
+                                        <field name="document_template_id"/>
+                                    </group>
+                                </group>
+                                <field name="document_ids">
+                                    <form>
+                                        <header>
+                                            <field name="state" widget="statusbar"/>
+                                        </header>
+                                        <group>
+                                            <group>
+
+                                                <field name="document_type" required="1"/>
+                                                <field name="file_name" invisible="True"/>
+                                                <field name="document" filename="file_name" required="1"
+                                                       widget="binary"/>
+                                                <field name="submit_employee_id" required="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="role_id" required="1"/>
+                                                <field name="date" required="1"/>
+
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="state" invisible="1"/>
+                                        <field name="date"/>
+                                        <field name="document_type"/>
+                                        <field name="submit_employee_id"/>
+                                        <field name="file_name" invisible="True"/>
+                                        <field name="document" filename="file_name" widget="binary"/>
+                                        <button name="action_approve" type="object" string="Approved"
+                                                class="btn btn-outline-success"
+                                                invisible="state in ['approved']"/>
+                                        <button name="action_in_progress" type="object" string="In Progress"
+                                                class="btn btn-outline-info"
+                                                invisible="state in ['in_progress', 'approved']"/>
+                                        <button name="action_failed" type="object" string="Failed"
+                                                class="btn btn-outline-danger"
+                                                invisible="state in ['failed', 'approved']"/>
+                                        <field name="state" widget="badge" decoration-success="state=='approved'"
+                                               decoration-danger="state=='failed'"
+                                               decoration-info="state=='in_progress'"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Equipment Order" invisible="stage == 'cancel'">
+                                <div class="row" style="margin-bottom:15px;padding-left:17px">
+                                    <button name="action_equipment_po" type="object"
+                                            string="Create Equipment Purchase Order"
+                                            invisible="stage in ['confirm', 'cancel', 'done', 'close']"
+                                            class="btn btn-outline-dark"/>
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            style="margin-left:15px;"
+                                            name="action_view_equipment_po">
+                                        <span class="badge badge-dark">
+                                            <field name="equip_po_count"
+                                                   nolabel="1"/>
+                                        </span>
+                                        View Equipment PO
+                                    </button>
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            style="margin-left:15px;"
+                                            name="action_view_equipment_bill">
+                                        <span class="badge badge-dark">
+                                            <field name="equip_bill_count" nolabel="1"/>
+                                        </span>
+                                        View Equipment Bill
+                                    </button>
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            style="margin-left:15px;"
+                                            name="action_view_delivery_order">
+                                        <span class="badge badge-dark">
+                                            <field name="equipment_delivery_order_count" nolabel="1"/>
+                                        </span>
+                                        View Delivery Order
+                                    </button>
+                                </div>
+                                <field name="equipment_ids">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="name" required="1"/>
+                                                <label for="equipment_po_id" class="mt-1"/>
+                                                <div name="equipment_po_id">
+                                                    <field name="equipment_po_id" readonly="1" class="oe_inline"
+                                                           force_save="1"/>
+                                                    <field name="state" widget="badge" style="margin-left: 10px;"
+                                                           decoration-success="state=='purchase'"
+                                                           decoration-danger="state=='cancel'"
+                                                           decoration-info="state=='sent'"
+                                                           decoration-primary="state=='to approve'"
+                                                           decoration-warning="state=='done'"/>
+                                                </div>
+                                            </group>
+                                            <group>
+                                                <field name="job_type_id" required="1"/>
+                                                <field name="date" required="1"/>
+                                            </group>
+                                        </group>
+                                        <group string="Equipment Details">
+                                            <field name="construction_equipment_ids">
+                                                <form>
+                                                    <group>
+                                                        <group>
+                                                            <field name="equipment_id" required="1"/>
+                                                            <field name="company_id" invisible="1"/>
+                                                            <field name="currency_id" invisible="1"/>
+                                                            <field name="cost" required="1"/>
+                                                        </group>
+                                                        <group>
+                                                            <field name="qty" required="1"/>
+                                                            <field name="cost_type" required="1"/>
+                                                        </group>
+                                                    </group>
+                                                    <group string="Description">
+                                                        <field name="desc" nolabel="1"
+                                                               required="cost_type == 'other'"/>
+                                                    </group>
+                                                </form>
+                                                <tree>
+                                                    <field name="equipment_id"/>
+                                                    <field name="cost_type"/>
+                                                    <field name="qty"/>
+                                                    <field name="cost" string="Approx Cost"/>
+                                                </tree>
+                                            </field>
+                                            <group class="oe_subtotal_footer oe_right" style="text-align: right">
+                                                <field name="total_equipment_cost"
+                                                       class="oe_subtotal_footer_separator"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="job_type_id"/>
+                                        <field name="date"/>
+                                        <field name="equipment_po_id" widget="many2one_clickable"/>
+                                        <field name="state" widget="badge" decoration-success="state=='purchase'"
+                                               decoration-danger="state=='cancel'" decoration-info="state=='sent'"
+                                               decoration-primary="state=='to approve'"
+                                               decoration-warning="state=='done'"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Material Order" invisible="stage == 'cancel'">
+                                <div class="row" style="margin-bottom:15px;padding-left:17px">
+                                    <button name="action_material_po" type="object"
+                                            string="Create Material Purchase Order"
+                                            invisible="stage in ['confirm', 'cancel', 'done', 'close']"
+                                            class="btn btn-outline-dark"/>
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            style="margin-left:15px;"
+                                            name="action_view_material_po">
+                                        <span class="badge badge-dark">
+                                            <field name="material_po_count"
+                                                   nolabel="1"/>
+                                        </span>
+                                        View Material PO
+                                    </button>
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            style="margin-left:15px;"
+                                            name="action_view_material_bill">
+                                        <span class="badge badge-dark">
+                                            <field name="material_bill_count" nolabel="1"/>
+                                        </span>
+                                        View Material Bill
+                                    </button>
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            style="margin-left:15px;"
+                                            name="action_view_delivery_order_material">
+                                        <span class="badge badge-dark">
+                                            <field name="material_delivery_order_count" nolabel="1"/>
+                                        </span>
+                                        View Delivery Order
+                                    </button>
+                                </div>
+                                <field name="material_ids">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="name" required="1"/>
+                                                <label for="material_po_id" class="mt-1"/>
+                                                <div name="material_po_id">
+                                                    <field name="material_po_id" readonly="1" class="oe_inline"
+                                                           force_save="1"/>
+                                                    <field name="state" widget="badge" style="margin-left: 10px;"
+                                                           decoration-success="state=='purchase'"
+                                                           decoration-danger="state=='cancel'"
+                                                           decoration-info="state=='sent'"
+                                                           decoration-primary="state=='to approve'"
+                                                           decoration-warning="state=='done'"/>
+                                                </div>
+                                            </group>
+                                            <group>
+                                                <field name="job_type_id" required="1"/>
+                                                <field name="date" required="1"/>
+                                            </group>
+                                        </group>
+                                        <group string="Material Details">
+                                            <field name="construction_material_ids">
+                                                <tree editable="bottom">
+                                                    <field name="material_id" required="1"/>
+                                                    <field name="uom_id" required="1"/>
+                                                    <field name="qty" required="1"/>
+                                                    <field name="cost" required="1"/>
+                                                    <field name="total_cost"/>
+                                                </tree>
+                                            </field>
+                                            <group class="oe_subtotal_footer oe_right" style="text-align: right">
+                                                <field name="total_material_cost" class="oe_subtotal_footer_separator"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="job_type_id"/>
+                                        <field name="date"/>
+                                        <field name="material_po_id" widget="many2one_clickable"/>
+                                        <field name="state" widget="badge" decoration-success="state=='purchase'"
+                                               decoration-danger="state=='cancel'" decoration-info="state=='sent'"
+                                               decoration-primary="state=='to approve'"
+                                               decoration-warning="state=='done'"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Labours &amp; Workers"
+                                  invisible="stage == 'cancel'">
+                                <div class="row" style="margin-bottom:15px;padding-left:17px">
+                                    <button name="action_labours_bill" type="object"
+                                            string="Create Labours Bill"
+                                            invisible="stage in ['a_costing', 'confirm', 'done', 'cancel', 'close']"
+                                            class="btn btn-outline-dark"/>
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            style="margin-left:15px;"
+                                            name="action_view_labour_bill">
+                                        <span class="badge badge-dark">
+                                            <field name="labour_bill_count"
+                                                   nolabel="1"/>
+                                        </span>
+                                        View Labour Bill
+                                    </button>
+                                </div>
+                                <field name="construction_labours_ids">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="title" required="1"/>
+                                                <field name="labour_responsible_id" required="1"/>
+                                                <label for="labour_responsible_id" string=""
+                                                       invisible="labour_responsible_id"/>
+                                                <div class="font-italic text-muted"
+                                                     invisible="labour_responsible_id">
+                                                    All the labours and workers related accounting forwarding to Labour
+                                                    Responsible
+                                                </div>
+                                            </group>
+                                            <group>
+                                                <field name="date" required="1"/>
+                                                <label for="labour_bill_id" class="mt-1"/>
+                                                <div name="labour_bill_id">
+                                                    <field name="labour_bill_id" readonly="1" class="oe_inline"
+                                                           force_save="1"/>
+                                                    <field name="payment_state" widget="badge"
+                                                           style="margin-left: 10px;"
+                                                           decoration-success="payment_state=='paid'"
+                                                           decoration-danger="payment_state=='not_paid'"
+                                                           decoration-info="payment_state=='in_payment'"
+                                                           decoration-primary="payment_state=='partial'"
+                                                           decoration-warning="payment_state=='reversed'"/>
+                                                </div>
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="company_id" invisible="1"/>
+                                            </group>
+                                        </group>
+                                        <group>
+                                            <field name="labours_ids" widget="many2many_tags" required="1"/>
+                                        </group>
+                                        <group class="oe_subtotal_footer oe_right" style="text-align: right">
+                                            <field name="total_labour_cost" class="oe_subtotal_footer_separator"/>
+                                        </group>
+                                    </form>
+                                    <kanban class="o_res_partner_kanban">
+                                        <field name="id"/>
+                                        <field name="title"/>
+                                        <field name="labour_responsible_id"/>
+                                        <field name="date"/>
+                                        <field name="labours_ids"/>
+                                        <field name="total_labour_cost"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click"
+                                                     style="width:230px;height:auto;min-height: 115px;">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <h4 style="color:#714B67;">
+                                                                <strong>
+                                                                    <field name="title"/>
+                                                                </strong>
+                                                            </h4>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <field name="date"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <span>
+                                                                Labour Responsible
+                                                                <h6>
+                                                                    <strong>
+                                                                        <field name="labour_responsible_id"/>
+                                                                    </strong>
+                                                                </h6>
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <span>
+                                                                Total Cost
+                                                                <h6>
+                                                                    <strong>
+                                                                        <field name="company_id" invisible="1"/>
+                                                                        <field name="currency_id" invisible="1"/>
+                                                                        <field name="total_labour_cost"
+                                                                               widget="monetary"/>
+                                                                    </strong>
+                                                                </h6>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <strong>
+                                                                Labours
+                                                            </strong>
+                                                            <br/>
+                                                            <t t-if="record.labours_ids.raw_value">
+                                                                <field name="labours_ids" widget="many2many_tags"/>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Engineer &amp; Architect"
+                                  invisible="stage == 'cancel'">
+                                <div class="row" style="margin-bottom:15px;padding-left:17px">
+                                    <button name="action_eng_arc_bill" type="object"
+                                            string="Create Engineer &amp; Architect Bill"
+                                            invisible="stage in ['a_costing', 'confirm', 'done', 'cancel', 'close']"
+                                            class="btn btn-outline-dark"/>
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            style="margin-left:15px;"
+                                            name="action_view_eng_arc_bill">
+                                        <span class="badge badge-dark">
+                                            <field name="eng_arc_bill_count" nolabel="1"/>
+                                        </span>
+                                        Engineer &amp; Architect Bill
+                                    </button>
+                                </div>
+                                <group>
+                                    <field name="construction_engineer_ids" nolabel="1">
+                                        <form>
+                                            <group>
+                                                <group>
+                                                    <field name="company_id" invisible="1"/>
+                                                    <field name="currency_id" invisible="1"/>
+                                                    <field name="role_id" required="1"/>
+                                                </group>
+                                                <group>
+                                                    <field name="employee_id" required="1"/>
+                                                </group>
+                                            </group>
+                                            <group string="Charges &amp; Payment">
+                                                <group>
+                                                    <field name="charges" required="1"/>
+                                                </group>
+                                            </group>
+                                            <group>
+                                                <field name="eng_invoice_line_ids" nolabel="1"
+                                                       context="{'charges':charges}">
+                                                    <tree editable="top">
+                                                        <field name="name" required="1"/>
+                                                        <field name="date" required="1"/>
+                                                        <field name="charges" required="1"/>
+                                                        <field name="eng_arc_bill_id" readonly="1" force_save="1"
+                                                               widget="many2one_button"/>
+                                                        <field name="payment_state" widget="badge"
+                                                               decoration-success="payment_state=='paid'"
+                                                               decoration-danger="payment_state=='not_paid'"
+                                                               decoration-info="payment_state=='in_payment'"
+                                                               decoration-primary="payment_state=='partial'"
+                                                               decoration-warning="payment_state=='reversed'"/>
+                                                    </tree>
+                                                </field>
+                                            </group>
+                                            <group string="Notes">
+                                                <field name="note" nolabel="1"/>
+                                            </group>
+                                        </form>
+                                        <kanban>
+                                            <field name="id"/>
+                                            <field name="image_1920"/>
+                                            <field name="employee_id"/>
+                                            <field name="role_id"/>
+                                            <field name="charges"/>
+                                            <templates>
+                                                <t t-name="kanban-box">
+                                                    <div class="oe_kanban_global_click"
+                                                         style="width:250px;height:auto;">
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                                <img alt="Avtar"
+                                                                     t-att-src="kanban_image('construction.engineer.line','image_1920',record.id.raw_value)"
+                                                                     style="width:100px;height:100px;margin-top: 0px;margin-bottom: 0px;"/>
+                                                            </div>
+                                                            <div class="col-1"/>
+                                                            <div class="col-7" style="margin-left:10px;">
+                                                                <h6>
+                                                                    <strong>
+                                                                        <field name="role_id"/>
+                                                                    </strong>
+                                                                </h6>
+                                                                <field name="employee_id"/>
+                                                                <br/>
+                                                                <field name="company_id" invisible="1"/>
+                                                                <field name="currency_id" invisible="1"/>
+                                                                <field name="charges" widget="monetary"/>
+                                                                <br/>
+                                                                <field name="invoice_paid_status" widget="badge"
+                                                                       decoration-success="invoice_paid_status=='paid'"
+                                                                       decoration-danger="invoice_paid_status=='not_paid'"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                        </kanban>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Extra Expense"
+                                  invisible="stage == 'cancel'">
+                                <div class="row" style="margin-bottom:15px;padding-left:17px">
+                                    <button class="btn btn-outline-dark"
+                                            type="object"
+                                            name="action_view_expense_bill">
+                                        <span class="badge badge-dark">
+                                            <field name="expense_bill_count" nolabel="1"/>
+                                        </span>
+                                        View Expense Bill
+                                    </button>
+                                </div>
+                                <field name="construction_expense_ids">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="company_id" invisible="1"/>
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="expense_product_id" required="1"/>
+                                                <field name="expense_bill_id" force_save="1" readonly="1"
+                                                       invisible="not expense_bill_id"/>
+                                                <field name="note"/>
+                                            </group>
+                                            <group>
+                                                <field name="date" required="1"/>
+                                                <field name="cost" required="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="expense_product_id"/>
+                                        <field name="date"/>
+                                        <field name="note"/>
+                                        <field name="cost"/>
+                                        <field name="expense_bill_id" widget="many2one_clickable"
+                                               invisible="not expense_bill_id"/>
+                                        <field name="payment_state" widget="badge"
+                                               decoration-success="payment_state=='paid'"
+                                               decoration-danger="payment_state=='not_paid'"
+                                               decoration-info="payment_state=='in_payment'"
+                                               decoration-primary="payment_state=='partial'"
+                                               decoration-warning="payment_state=='reversed'"/>
+                                        <button name="action_expense_bill" type="object" string="Create Bill"
+                                                invisible="expense_bill_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Site Inspection"
+                                  invisible="stage in ['confirm', 'a_costing', 'cancel']">
+                                <field name="construction_inspection_ids">
+                                    <tree create="false">
+                                        <field name="date"/>
+                                        <field name="date_deadline"/>
+                                        <field name="user_id" string="Responsible" widget="many2one_avatar_user"/>
+                                        <field name="note"/>
+                                        <button name="action_view_task" type="object" string="View Task"
+                                                class="btn btn-outline-dark"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="date"/>
+                                                <field name="user_id" string="Responsible"
+                                                       widget="many2one_avatar_user"/>
+                                            </group>
+                                            <group>
+                                                <field name="date_deadline"/>
+                                                <field name="note"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Insurance &amp; Risk Management"
+                                  invisible="stage == 'cancel'">
+                                <field name="risk_ids">
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="risk_type" required="1"/>
+                                                <field name="is_insurance" required="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="date"/>
+                                                <field name="note"/>
+                                            </group>
+                                        </group>
+                                        <group string="Insurance Details"
+                                               invisible="not is_insurance">
+                                            <group>
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="company_id" invisible="1"/>
+                                                <field name="policy_no"
+                                                       required="is_insurance"/>
+                                                <field name="policy_name"
+                                                       required="is_insurance"/>
+                                                <field name="total_charge"
+                                                       required="is_insurance"/>
+                                            </group>
+                                            <group>
+                                                <field name="insurance_invoice_id" readonly="1" force_save="1"/>
+                                                <field name="insurance_date"
+                                                       required="is_insurance"/>
+                                                <field name="issue_by"
+                                                       required="is_insurance"/>
+                                            </group>
+                                        </group>
+                                        <group string="Risk Covered" invisible="not is_insurance">
+                                            <field name="risk_ids" nolabel="1">
+                                                <tree>
+                                                    <field name="name"/>
+                                                    <field name="desc"/>
+                                                </tree>
+                                            </field>
+                                        </group>
+                                        <group string="Terms &amp; Conditions">
+                                            <field name="term" nolabel="1"/>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="risk_type"/>
+                                        <field name="date"/>
+                                        <field name="note"/>
+                                        <field name="is_insurance"/>
+                                        <field name="insurance_invoice_id" widget="many2one_clickable"
+                                               invisible="not insurance_invoice_id"/>
+                                        <field name="payment_state" widget="badge"
+                                               decoration-success="payment_state=='paid'"
+                                               decoration-danger="payment_state=='not_paid'"
+                                               decoration-info="payment_state=='in_payment'"
+                                               decoration-primary="payment_state=='partial'"
+                                               decoration-warning="payment_state=='reversed'"/>
+                                        <button name="action_insurance_bill" type="object" string="Create Invoice"
+                                                invisible="insurance_invoice_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Description">
+                                <field name="desc" nolabel="1" placeholder="Description"/>
+                            </page>
+                            <page string="Accountancy">
+                                <div>
+                                    <div class="font-italic text-muted">
+                                        Note : When using the "All Bill" mode in accounting, the system will show the
+                                        details of the actual amount spent on a project and compare it to the estimated
+                                        budget for that project. This information can be useful for reference and
+                                        evaluation of project performance. when using the "Paid" mode in accounting, the
+                                        system will display the status of the bill and the associated order, along with
+                                        details of how much has already been paid and how much is still outstanding.
+                                        This mode helps in keeping track of payments and ensures timely payment of
+                                        bills.
+                                    </div>
+                                </div>
+                                <group>
+                                    <label for="accountancy_type"/>
+                                    <div>
+                                        <field name="accountancy_type" options="{'horizontal':True}" widget="radio"/>
+                                        <div class="font-italic text-muted"
+                                             invisible="accountancy_type != 'all_bill'">
+                                            The remaining budget for a project will be determined by adding up all
+                                            bills, including material and equipment purchase orders, extra expenses,
+                                            insurance, labor, engineering and architect fees. This total will then be
+                                            subtracted from the original estimate budget. If there is a scrap order,
+                                            that amount will be added to the estimate budget. All expenses will be
+                                            considered under the "All Bill" accountancy method.
+                                        </div>
+                                    </div>
+                                    <field name="is_negative_remaining" invisible="1"/>
+                                </group>
+                                <div invisible="accountancy_type != 'all_bill'">
+                                    <table class="table table-bordered"
+                                           invisible="not is_negative_remaining">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:25%" class="table-success">Budget Amount</td>
+                                                <td style="width:25%" class="table-success">
+                                                    <field name="estimate_cost" nolabel="1"/>
+                                                </td>
+                                                <td style="width:25%" class="table-danger">Remain Amount(from Budget)
+                                                </td>
+                                                <td style="width:25%" class="table-danger">
+                                                    <field name="remaining_budget_amount" nolabel="1"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-bordered"
+                                           invisible="is_negative_remaining">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:25%" class="table-success">Budget Amount</td>
+                                                <td class="table-success" style="width:25%">
+                                                    <field name="estimate_cost" nolabel="1"/>
+                                                </td>
+                                                <td class="table-success" style="width:25%">Remain Amount(from Budget)
+                                                </td>
+                                                <td class="table-success" style="width:25%">
+                                                    <field name="remaining_budget_amount" nolabel="1"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:25%">Equipment Purchase Order Total</td>
+                                                <td style="width:25%">
+                                                    <field name="total_equipment_po_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:25%">Material Purchase Order Total</td>
+                                                <td style="width:25%">
+                                                    <field name="total_material_po_amount" nolabel="1"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:25%">Labour Bill Total</td>
+                                                <td style="width:25%">
+                                                    <field name="total_labour_bill_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:25%">Engineer Bill Total</td>
+                                                <td style="width:25%">
+                                                    <field name="total_engineer_bill_amount" nolabel="1"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:25%">Expense Bill Total</td>
+                                                <td style="width:25%">
+                                                    <field name="total_extra_expense_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:25%">Insurance Bill Total</td>
+                                                <td style="width:25%">
+                                                    <field name="total_insurance_amount" nolabel="1"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:25%">Scrap Order Total</td>
+                                                <td style="width:25%">
+                                                    <field name="total_scrap_order_amount" nolabel="1"/>
+                                                </td>
+                                                <td colspan="2" style="width:50%">#</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div invisible="accountancy_type != 'paid'">
+                                    <table class="table table-bordered"
+                                           invisible="not is_negative_remaining">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:25%" class="table-success">Amount to Pay</td>
+                                                <td style="width:25%" class="table-success">
+                                                    <field name="total_to_pay" nolabel="1"/>
+                                                </td>
+                                                <td style="width:25%" class="table-success">Not Paid</td>
+                                                <td style="width:25%" class="table-success">
+                                                    <field name="remaining_to_pay" nolabel="1"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-bordered"
+                                           invisible="is_negative_remaining">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:25%" class="table-success">Amount to Pay</td>
+                                                <td class="table-success" style="width:25%">
+                                                    <field name="total_to_pay" nolabel="1"/>
+                                                </td>
+                                                <td style="width:25%" class="table-danger">Not Paid</td>
+                                                <td class="table-danger" style="width:25%">
+                                                    <field name="remaining_to_pay" nolabel="1"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:33%">#</td>
+                                                <td style="width:33%">Paid</td>
+                                                <td style="width:33%">Remaining</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:33%">Equipment Purchase Order</td>
+                                                <td style="width:33%">
+                                                    <field name="total_equipment_po_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:33%">
+                                                    <field name="remaining_equipment_po_amount"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:33%">Material Purchase Order</td>
+                                                <td style="width:33%">
+                                                    <field name="total_material_po_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:33%">
+                                                    <field name="remaining_material_po_amount"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:33%">Labour Bill</td>
+                                                <td style="width:33%">
+                                                    <field name="total_labour_bill_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:33%">
+                                                    <field name="remaining_labour_bill_amount"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:33%">Engineer Bill</td>
+                                                <td style="width:33%">
+                                                    <field name="total_engineer_bill_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:33%">
+                                                    <field name="remaining_engineer_bill_amount"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:33%">Expense Bill</td>
+                                                <td style="width:33%">
+                                                    <field name="total_extra_expense_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:33%">
+                                                    <field name="remaining_extra_expense_amount"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:33%">Insurance Bill</td>
+                                                <td style="width:33%">
+                                                    <field name="total_insurance_amount" nolabel="1"/>
+                                                </td>
+                                                <td style="width:33%">
+                                                    <field name="remaining_insurance_amount"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="construction_details_kanban_view" model="ir.ui.view">
+            <field name="name">construction.details.kanban.view</field>
+            <field name="model">construction.details</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="site_id"/>
+                    <field name="activity_ids"/>
+                    <field name="customer_company_id"/>
+                    <field name="company_id"/>
+                    <field name="currency_id"/>
+                    <field name="estimate_cost"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="project_id"/>
+                    <field name="is_approved_document"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="row mb4">
+                                    <div class="col-6 o_kanban_record_headings">
+                                        <h5>
+                                            <strong>
+                                                <field name="site_id"/>
+                                            </strong>
+                                        </h5>
+                                        <field name="name"/>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <strong>
+                                            Activity
+                                            <field name="activity_ids" widget="kanban_activity"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span>
+                                            <field name="customer_company_id"/>
+                                        </span>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span>
+                                            Budget :
+                                            <field name="company_id" invisible="1"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <strong>
+                                                <field name="estimate_cost" widget="monetary"/>
+                                            </strong>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <t t-if="record.start_date.raw_value">
+                                            <span>
+                                                <strong>
+                                                    <field name="start_date"/>
+                                                    <span class="svg-icon svg-icon-info svg-icon-muted svg-icon-2hx">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z"
+                                                                  fill="currentColor"/>
+                                                            <path opacity="0.3"
+                                                                  d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z"
+                                                                  fill="currentColor"/>
+                                                        </svg>
+                                                    </span>
+                                                    <field name="end_date"/>
+                                                </strong>
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>
+                                            <field name="area_plot"/>
+                                            Sqft.
+                                        </strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="float-right">
+                                            <field name="stage" widget="badge" decoration-success="stage=='done'"
+                                                   decoration-danger="stage=='cancel'"
+                                                   decoration-primary="stage=='a_costing'"
+                                                   decoration-warning="stage=='in_progress'"
+                                                   decoration-info="stage=='confirm'"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <hr style="margin-top: 7px;margin-bottom: 7px;"/>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span>
+                                            Equipment PO
+                                            <span class="badge badge-info">
+                                                <field name="equip_po_count"/>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>
+                                            Task
+                                            <span class="badge badge-info" style="margin-left:25px;">
+                                                <field name="task_count"/>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span>
+                                            Material PO
+                                            <span class="badge badge-info" style="margin-left:16px;">
+                                                <field name="material_po_count"/>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>
+                                            Meetings
+                                            <span class="badge badge-info">
+                                                <field name="meeting_count"/>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="construction_details_search_view" model="ir.ui.view">
+            <field name="name">construction.details.search.view</field>
+            <field name="model">construction.details</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Sequence"/>
+                    <field name="site_id" string="Site"/>
+                    <field name="project_id" string="Project"/>
+                    <filter string="Site" name="site" domain="[]" context="{'group_by':'site_id'}"/>
+                    <filter string="Customer / Company" name="customer" domain="[]"
+                            context="{'group_by':'customer_company_id'}"/>
+                    <separator/>
+                    <searchpanel>
+                        <field name="stage" string="State" enable_counters="1"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+        <record id="construction_details_tree_view" model="ir.ui.view">
+            <field name="name">construction.details.tree.view</field>
+            <field name="model">construction.details</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="site_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="cost_of_construction"/>
+                    <field name="stage" widget="badge" decoration-success="stage=='done'"
+                           decoration-danger="stage=='cancel'"
+                           decoration-primary="stage=='a_costing'"
+                           decoration-warning="stage=='in_progress'"
+                           decoration-info="stage=='confirm'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="construction_details_action" model="ir.actions.act_window">
+            <field name="name">Construction Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.details</field>
+            <field name="view_mode">kanban,tree,form,activity,search</field>
+        </record>
+    </data>
+</flectra>

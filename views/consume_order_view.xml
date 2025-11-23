@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="view_consume_order_tree" model="ir.ui.view">
+            <field name="name">construction.consume.order.tree</field>
+            <field name="model">construction.consume.order</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="work_order_id"/>
+                    <field name="state" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_consume_order_form" model="ir.ui.view">
+            <field name="name">construction.consume.order.form</field>
+            <field name="model">construction.consume.order</field>
+            <field name="arch" type="xml">
+                <form string="Consume Order">
+                    <header>
+                        <button name="action_send_for_qc" type="object" string="Send for QC" class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_department_approve" type="object" string="Department Approve" invisible="state != 'qc_approved'"/>
+                        <button name="action_consume" type="object" string="Consume" class="btn-success" invisible="state != 'approved'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="project_id"/>
+                                <field name="work_order_id"/>
+                                <field name="warehouse_id"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="qc_approved" readonly="1"/>
+                                <field name="department_approved" readonly="1"/>
+                                <field name="approved_by" readonly="1"/>
+                                <field name="approval_date" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Lines">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="quantity"/>
+                                        <field name="consumed" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_quality_check_tree" model="ir.ui.view">
+            <field name="name">construction.quality.check.tree</field>
+            <field name="model">construction.quality.check</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="check_type"/>
+                    <field name="passed"/>
+                    <field name="failed"/>
+                    <field name="state" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_quality_check_form" model="ir.ui.view">
+            <field name="name">construction.quality.check.form</field>
+            <field name="model">construction.quality.check</field>
+            <field name="arch" type="xml">
+                <form string="Quality Check">
+                    <header>
+                        <button name="action_start_check" type="object" string="Start Check" class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_pass" type="object" string="Pass" class="btn-success" invisible="state != 'in_progress'"/>
+                        <button name="action_fail" type="object" string="Fail" class="btn-danger" invisible="state != 'in_progress'"/>
+                        <button name="action_department_approve" type="object" string="Department Approve" invisible="state != 'passed'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="project_id"/>
+                                <field name="subcontract_id"/>
+                                <field name="consume_order_id"/>
+                                <field name="work_order_id"/>
+                                <field name="check_type"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="inspector_id"/>
+                                <field name="passed" readonly="1"/>
+                                <field name="failed" readonly="1"/>
+                                <field name="department_approved" readonly="1"/>
+                                <field name="approved_by" readonly="1"/>
+                                <field name="approval_date" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_consume_order" model="ir.actions.act_window">
+            <field name="name">Consume Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.consume.order</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_quality_check" model="ir.actions.act_window">
+            <field name="name">Quality Checks</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.quality.check</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</flectra>
+

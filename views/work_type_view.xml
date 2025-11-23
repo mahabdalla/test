@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <record id="view_work_type_tree" model="ir.ui.view">
+            <field name="name">construction.work.type.tree</field>
+            <field name="model">construction.work.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_work_type_form" model="ir.ui.view">
+            <field name="name">construction.work.type.form</field>
+            <field name="model">construction.work.type</field>
+            <field name="arch" type="xml">
+                <form string="Work Type">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <notebook>
+                            <page string="Sub Types">
+                                <field name="subtype_ids">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_work_type" model="ir.actions.act_window">
+            <field name="name">Work Types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">construction.work.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</flectra>
+
