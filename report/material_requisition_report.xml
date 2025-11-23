@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <template id="material_requisition_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .requisition-table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-top: 20px;
+                                }
+                                .requisition-table th, .requisition-table td {
+                                    border: 1px solid #ddd;
+                                    padding: 8px;
+                                    text-align: left;
+                                }
+                                .requisition-table th {
+                                    background-color: #f2f2f2;
+                                    font-weight: bold;
+                                }
+                                .info-table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-top: 10px;
+                                }
+                                .info-table td {
+                                    padding: 8px;
+                                    border: 1px solid #ddd;
+                                }
+                                .info-label {
+                                    font-weight: bold;
+                                    width: 30%;
+                                    background-color: #f2f2f2;
+                                }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Material Requisition Report</h2>
+                                    <table class="info-table">
+                                        <tr>
+                                            <td class="info-label">Reference:</td>
+                                            <td><span t-field="o.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Sub Project:</td>
+                                            <td><span t-field="o.project_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Work Order:</td>
+                                            <td><span t-field="o.work_order_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Warehouse:</td>
+                                            <td><span t-field="o.warehouse_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Date:</td>
+                                            <td><span t-field="o.date"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Status:</td>
+                                            <td><span t-field="o.state"/></td>
+                                        </tr>
+                                    </table>
+                                    <h3 style="margin-top: 20px;">Material Lines:</h3>
+                                    <table class="requisition-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Material</th>
+                                                <th>Operation Type</th>
+                                                <th>Required Qty</th>
+                                                <th>Available Qty</th>
+                                                <th>Transferred Qty</th>
+                                                <th>Fulfilled Qty</th>
+                                                <th>Remaining Qty</th>
+                                                <th>Unit Price</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.line_ids" t-as="line">
+                                                <tr>
+                                                    <td><span t-field="line.product_id.name"/></td>
+                                                    <td><span t-field="line.operation_type"/></td>
+                                                    <td><span t-field="line.quantity"/></td>
+                                                    <td><span t-field="line.available_qty"/></td>
+                                                    <td><span t-field="line.transferred_qty"/></td>
+                                                    <td><span t-field="line.fulfilled_qty"/></td>
+                                                    <td><span t-field="line.remaining_qty"/></td>
+                                                    <td><span t-field="line.unit_price" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                                    <td><span t-field="line.total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
+        <record id="action_report_material_requisition" model="ir.actions.report">
+            <field name="name">Material Requisition Report</field>
+            <field name="model">construction.material.requisition</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.material_requisition_report</field>
+            <field name="report_file">construction_management.material_requisition_report</field>
+            <field name="print_report_name">'Material Requisition - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_construction_material_requisition"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</flectra>
+

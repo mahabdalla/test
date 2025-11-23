@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+# Copyright 2020 - Today Intelak.
+# Part of Intelak. See LICENSE file for full copyright and licensing details.
+from flectra import fields, api, models
+from flectra.exceptions import ValidationError

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="constructionDashboard">
+        <section class="section construction_dashboard">
+            <div class="container construction_dashboard">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 mb-4 mt32 mb16">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-5">
+                                    <h2 class="section-header">Site Statistics</h2>
+                                </div>
+                            </div>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-lg-4 col-sm-6 total-construction-site">
+                            <div class="card card-xl-stretch mb-xl-8">
+                                <!--begin::Body-->
+                                <div class="card-body p-0">
+                                    <div class="d-flex flex-stack card-p flex-grow-1">
+                                        <span class="symbol symbol-50px me-2">
+                                            <span class="symbol-label bg-light-info">
+                                                <span class="svg-icon svg-icon-muted svg-icon-info svg-icon-2hx">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M20 19.725V18.725C20 18.125 19.6 17.725 19 17.725H5C4.4 17.725 4 18.125 4 18.725V19.725H3C2.4 19.725 2 20.125 2 20.725V21.725H22V20.725C22 20.125 21.6 19.725 21 19.725H20Z"
+                                                              fill="currentColor"/>
+                                                        <path opacity="0.3"
+                                                              d="M22 6.725V7.725C22 8.325 21.6 8.725 21 8.725H18C18.6 8.725 19 9.125 19 9.725C19 10.325 18.6 10.725 18 10.725V15.725C18.6 15.725 19 16.125 19 16.725V17.725H15V16.725C15 16.125 15.4 15.725 16 15.725V10.725C15.4 10.725 15 10.325 15 9.725C15 9.125 15.4 8.725 16 8.725H13C13.6 8.725 14 9.125 14 9.725C14 10.325 13.6 10.725 13 10.725V15.725C13.6 15.725 14 16.125 14 16.725V17.725H10V16.725C10 16.125 10.4 15.725 11 15.725V10.725C10.4 10.725 10 10.325 10 9.725C10 9.125 10.4 8.725 11 8.725H8C8.6 8.725 9 9.125 9 9.725C9 10.325 8.6 10.725 8 10.725V15.725C8.6 15.725 9 16.125 9 16.725V17.725H5V16.725C5 16.125 5.4 15.725 6 15.725V10.725C5.4 10.725 5 10.325 5 9.725C5 9.125 5.4 8.725 6 8.725H3C2.4 8.725 2 8.325 2 7.725V6.725L11 2.225C11.6 1.925 12.4 1.925 13.1 2.225L22 6.725ZM12 3.725C11.2 3.725 10.5 4.425 10.5 5.225C10.5 6.025 11.2 6.725 12 6.725C12.8 6.725 13.5 6.025 13.5 5.225C13.5 4.425 12.8 3.725 12 3.725Z"
+                                                              fill="currentColor"/>
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <div class="d-flex flex-column text-end">
+                                            <span class="text-dark fw-bolder fs-2" id="total_site">0</span>
+                                            <span class="text-muted fw-bold mt-1">Total Sites</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 planning-construction-site">
+                            <div class="card card-xl-stretch mb-xl-8">
+                                <!--begin::Body-->
+                                <div class="card-body p-0">
+                                    <div class="d-flex flex-stack card-p flex-grow-1">
+                                        <span class="symbol symbol-50px me-2">
+                                            <span class="symbol-label bg-light-success">
+                                                <span class="svg-icon svg-icon-muted svg-icon-success svg-icon-2hx">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3"
+                                                              d="M18.0624 15.3454L13.1624 20.7453C12.5624 21.4453 11.5624 21.4453 10.9624 20.7453L6.06242 15.3454C4.56242 13.6454 3.76242 11.4452 4.06242 8.94525C4.56242 5.34525 7.46242 2.44534 11.0624 2.04534C15.8624 1.54534 19.9624 5.24525 19.9624 9.94525C20.0624 12.0452 19.2624 13.9454 18.0624 15.3454ZM13.0624 10.0453C13.0624 9.44534 12.6624 9.04534 12.0624 9.04534C11.4624 9.04534 11.0624 9.44534 11.0624 10.0453V13.0453H13.0624V10.0453Z"
+                                                              fill="currentColor"/>
+                                                        <path d="M12.6624 5.54531C12.2624 5.24531 11.7624 5.24531 11.4624 5.54531L8.06241 8.04531V12.0453C8.06241 12.6453 8.46241 13.0453 9.06241 13.0453H11.0624V10.0453C11.0624 9.44531 11.4624 9.04531 12.0624 9.04531C12.6624 9.04531 13.0624 9.44531 13.0624 10.0453V13.0453H15.0624C15.6624 13.0453 16.0624 12.6453 16.0624 12.0453V8.04531L12.6624 5.54531Z"
+                                                              fill="currentColor"/>
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <div class="d-flex flex-column text-end">
+                                            <span class="text-dark fw-bolder fs-2" id="planning_site">0</span>
+                                            <span class="text-muted fw-bold mt-1">In Planning</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 job-order-construction-site">
+                            <div class="card card-xl-stretch mb-xl-8">
+                                <!--begin::Body-->
+                                <div class="card-body p-0">
+                                    <div class="d-flex flex-stack card-p flex-grow-1">
+                                        <span class="symbol symbol-50px me-2">
+                                            <span class="symbol-label bg-light-danger">
+                                                <span class="svg-icon svg-icon-danger svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.3"
+                                                              d="M6 22H4V3C4 2.4 4.4 2 5 2C5.6 2 6 2.4 6 3V22Z"
+                                                              fill="black"/>
+                                                        <path d="M18 14H4V4H18C18.8 4 19.2 4.9 18.7 5.5L16 9L18.8 12.5C19.3 13.1 18.8 14 18 14Z"
+                                                              fill="black"/>
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg
+                                Icon-->
+                                            </span>
+                                        </span>
+                                        <div class="d-flex flex-column text-end">
+                                            <span class="text-dark fw-bolder fs-2" id="job_order">0</span>
+                                            <span class="text-muted fw-bold mt-1">Job Order</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt32">
+                        <div class="col-md-4 col-lg-4 col-sm-6 site-in_progress">
+                            <div class="card card-xl-stretch mb-xl-8">
+                                <!--begin::Body-->
+                                <div class="card-body p-0">
+                                    <div class="d-flex flex-stack card-p flex-grow-1">
+                                        <span class="symbol symbol-50px me-2">
+                                            <span class="symbol-label bg-light-danger">
+                                                <span class="svg-icon svg-icon-danger svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.3"
+                                                              d="M6 22H4V3C4 2.4 4.4 2 5 2C5.6 2 6 2.4 6 3V22Z"
+                                                              fill="black"/>
+                                                        <path d="M18 14H4V4H18C18.8 4 19.2 4.9 18.7 5.5L16 9L18.8 12.5C19.3 13.1 18.8 14 18 14Z"
+                                                              fill="black"/>
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <div class="d-flex flex-column text-end">
+                                            <span class="text-dark fw-bolder fs-2" id="site_in_progress">0</span>
+                                            <span class="text-muted fw-bold mt-1">In Progress</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6 complete-site">
+                            <div class="card card-xl-stretch mb-xl-8">
+                                <!--begin::Body-->
+                                <div class="card-body p-0">
+                                    <div class="d-flex flex-stack card-p flex-grow-1">
+                                        <span class="symbol symbol-50px me-2">
+                                            <span class="symbol-label bg-light-danger">
+                                                <span class="svg-icon svg-icon-danger svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.3"
+                                                              d="M6 22H4V3C4 2.4 4.4 2 5 2C5.6 2 6 2.4 6 3V22Z"
+                                                              fill="black"/>
+                                                        <path d="M18 14H4V4H18C18.8 4 19.2 4.9 18.7 5.5L16 9L18.8 12.5C19.3 13.1 18.8 14 18 14Z"
+                                                              fill="black"/>
+                                                    </svg>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <div class="d-flex flex-column text-end">
+                                            <span class="text-dark fw-bolder fs-2" id="complete_site">0</span>
+                                            <span class="text-muted fw-bold mt-1">Complete Site</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Body-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt32 mb16">
+                        <h2>Construction Statistic</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box mt16 mb16">
+                                <h5 class="mb16">Site State</h5>
+                                <div id="site_state"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box mt16 mb16">
+                                <h5 class="mb16">Site Type</h5>
+                                <div id="site_type"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="box mt16 mb16">
+                                <h5 class="mb16">Construction Timeline</h5>
+                                <div id="construction_time_line"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="box mt16 mb16">
+                                <h5 class="mb16">Equipment and Material Purchase Order</h5>
+                                <div id="equipment_material_po"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </t>
+</templates>

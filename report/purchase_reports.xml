@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <!-- Purchase Order Summary Report -->
+        <template id="purchase_order_summary_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                                .report-table th, .report-table td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+                                .report-table th { background-color: #f2f2f2; font-weight: bold; }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Purchase Order Summary</h2>
+                                    <table class="report-table">
+                                        <thead>
+                                            <tr>
+                                                <th>PO Reference</th>
+                                                <th>Product</th>
+                                                <th>Ordered Quantity</th>
+                                                <th>Received Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Total Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.order_line" t-as="line">
+                                                <tr>
+                                                    <td><span t-field="o.name"/></td>
+                                                    <td><span t-field="line.product_id.name"/></td>
+                                                    <td><span t-field="line.product_qty"/></td>
+                                                    <td><span t-field="line.qty_received"/></td>
+                                                    <td><span t-field="line.price_unit"/></td>
+                                                    <td><span t-field="line.price_subtotal"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="report_purchase_order_summary" model="ir.actions.report">
+            <field name="name">Purchase Order Summary</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.purchase_order_summary_report</field>
+            <field name="report_file">construction_management.purchase_order_summary_report</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Purchase Order Bill Summary Report -->
+        <template id="purchase_order_bill_summary_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                                .report-table th, .report-table td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+                                .report-table th { background-color: #f2f2f2; font-weight: bold; }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Purchase Order Bill Summary</h2>
+                                    <table class="report-table">
+                                        <thead>
+                                            <tr>
+                                                <th>PO Reference</th>
+                                                <th>Supplier Invoice</th>
+                                                <th>Invoice Date</th>
+                                                <th>Shipment Number</th>
+                                                <th>Amount Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.invoice_ids" t-as="invoice">
+                                                <tr>
+                                                    <td><span t-field="o.name"/></td>
+                                                    <td><span t-field="invoice.name"/></td>
+                                                    <td><span t-field="invoice.invoice_date"/></td>
+                                                    <td><span t-field="invoice.picking_ids.name" t-options="{'widget': 'many2one'}"/></td>
+                                                    <td><span t-field="invoice.amount_total"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="report_purchase_order_bill_summary" model="ir.actions.report">
+            <field name="name">Purchase Order Bill Summary</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.purchase_order_bill_summary_report</field>
+            <field name="report_file">construction_management.purchase_order_bill_summary_report</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Short Supply Summary Report -->
+        <template id="short_supply_summary_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                                .report-table th, .report-table td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+                                .report-table th { background-color: #f2f2f2; font-weight: bold; }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Short Supply Summary</h2>
+                                    <table class="report-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Required Quantity</th>
+                                                <th>Received Quantity</th>
+                                                <th>Remaining Quantity</th>
+                                                <th>Unit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.order_line" t-as="line">
+                                                <t t-if="line.product_qty > line.qty_received">
+                                                    <tr>
+                                                        <td><span t-field="line.product_id.name"/></td>
+                                                        <td><span t-field="line.product_qty"/></td>
+                                                        <td><span t-field="line.qty_received"/></td>
+                                                        <td><span t-field="line.product_qty - line.qty_received"/></td>
+                                                        <td><span t-field="line.product_uom.name"/></td>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="report_short_supply_summary" model="ir.actions.report">
+            <field name="name">Short Supply Summary</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.short_supply_summary_report</field>
+            <field name="report_file">construction_management.short_supply_summary_report</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Work Order Summary Report -->
+        <template id="work_order_summary_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                                .report-table th, .report-table td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+                                .report-table th { background-color: #f2f2f2; font-weight: bold; }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Work Order Summary</h2>
+                                    <table class="report-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Work Order</th>
+                                                <th>Phase</th>
+                                                <th>Sub Project</th>
+                                                <th>Labor Type</th>
+                                                <th>Estimated Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Total Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o" t-as="wo">
+                                                <tr>
+                                                    <td><span t-field="wo.name"/></td>
+                                                    <td><span t-field="wo.phase_id.name"/></td>
+                                                    <td><span t-field="wo.project_id.name"/></td>
+                                                    <td><span t-field="wo.work_type_id.name"/></td>
+                                                    <td><span t-field="wo.labor_hours"/></td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="report_work_order_summary" model="ir.actions.report">
+            <field name="name">Work Order Summary</field>
+            <field name="model">construction.work.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.work_order_summary_report</field>
+            <field name="report_file">construction_management.work_order_summary_report</field>
+            <field name="binding_model_id" ref="construction_management.model_construction_work_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- RA Bill Summary Report -->
+        <template id="ra_billing_summary_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                                .report-table th, .report-table td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+                                .report-table th { background-color: #f2f2f2; font-weight: bold; }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Running Account Bill Summary</h2>
+                                    <table class="report-table">
+                                        <thead>
+                                            <tr>
+                                                <th>RA Billing Reference</th>
+                                                <th>Subcontractor</th>
+                                                <th>Subcontract</th>
+                                                <th>Labor Category</th>
+                                                <th>Completed Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Total Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o" t-as="ra">
+                                                <tr>
+                                                    <td><span t-field="ra.name"/></td>
+                                                    <td><span t-field="ra.partner_id.name"/></td>
+                                                    <td><span t-field="ra.subcontract_id.name"/></td>
+                                                    <td><span t-field="ra.subcontract_id.subcontract_type"/></td>
+                                                    <td><span t-field="ra.completed_quantity"/></td>
+                                                    <td><span t-field="ra.unit_price"/></td>
+                                                    <td><span t-field="ra.amount_total"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="report_ra_billing_summary" model="ir.actions.report">
+            <field name="name">RA Bill Summary</field>
+            <field name="model">construction.ra.billing</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.ra_billing_summary_report</field>
+            <field name="report_file">construction_management.ra_billing_summary_report</field>
+            <field name="binding_model_id" ref="construction_management.model_construction_ra_billing"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</flectra>
+

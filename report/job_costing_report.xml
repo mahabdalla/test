@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <template id="construction_job_costing_qweb_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 style="text-align:center">
+                                <span t-field="o.name"/>
+                            </h2>
+                            <table class="table table-sm">
+                                <tbody>
+                                    <t t-if="o.job_order_id">
+                                        <tr>
+                                            <td>Site</td>
+                                            <td>
+                                                <span t-field="o.site_id.name"/>
+                                            </td>
+
+                                            <td>Job Order</td>
+                                            <td>
+                                                <span t-field="o.job_order_id.name"/>
+                                            </td>
+
+                                        </tr>
+                                    </t>
+                                    <t t-else="">
+                                        <tr>
+                                            <td colspan="2">
+                                                <center>Site</center>
+                                            </td>
+                                            <td colspan="2">
+                                                <strong>
+                                                    <center>
+                                                        <span t-field="o.site_id.name"/>
+                                                    </center>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <td>Estimate Time</td>
+                                        <td colspan="3">
+                                            <span t-field="o.start_date" style="margin-right:15px;"/>
+                                            <span class="svg-icon svg-icon-info svg-icon-muted svg-icon-2hx">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z"
+                                                          fill="currentColor"/>
+                                                    <path opacity="0.3"
+                                                          d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z"
+                                                          fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                            <span t-field="o.end_date" style="margin-left:15px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Estimate Budget
+                                        </td>
+                                        <td>
+                                            <span t-field="o.estimate_cost"/>
+                                        </td>
+                                        <td>
+                                            Area(sqft)
+                                        </td>
+                                        <td>
+                                            <span t-field="o.area_plot"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td>
+                                            <span>
+                                                <span t-field="o.street"/>
+                                                <br/>
+                                                <span t-field="o.street2"/>
+                                                <br/>
+                                                <span t-field="o.city"/>
+                                                <span t-field="o.state_id"/>
+                                                <span t-field="o.zip"/>
+                                                <br/>
+                                                <span t-field="o.country_id"/>
+
+                                            </span>
+                                        </td>
+                                        <td colspan="2">
+                                            <span>Longitude :
+                                                <span t-field="o.longitude"/>
+                                            </span>
+                                            <br/>
+                                            <span>
+                                                Latitude :
+                                                <span t-field="o.latitude"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr style="border:1px solid"/>
+                            <h3>
+                                <center>
+                                    <strong>
+                                        Project Estimation
+                                    </strong>
+                                </center>
+                            </h3>
+                            <hr style="border:1px solid"/>
+                            <h5>
+                                <center>
+                                    Material Costing
+                                </center>
+                            </h5>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Material</th>
+                                        <th scope="col">Unit of Measure</th>
+                                        <th scope="col">Qty.</th>
+                                        <th scope="col">Cost</th>
+                                        <th scope="col">Total Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.material_ids" t-as="m">
+                                        <tr>
+                                            <td>
+                                                <span t-field="m.material_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.uom_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.qty"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.cost"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.total_cost"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <h5>
+                                <center>
+                                    Equipment Costing
+                                </center>
+                            </h5>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Equipment</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Qty.</th>
+                                        <th scope="col">Cost</th>
+                                        <th scope="col">Total Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.equipment_ids" t-as="m">
+                                        <tr>
+                                            <td>
+                                                <span t-field="m.equipment_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.cost_type"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.qty"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.cost"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.total_cost"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+
+                            <h5>
+                                <center>
+                                    Labours &amp; Employee Costing
+                                </center>
+                            </h5>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">No of People</th>
+                                        <th scope="col">Charges</th>
+                                        <th scope="col">Total Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.eng_labour_ids" t-as="m">
+                                        <tr>
+                                            <td>
+                                                <span t-field="m.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.role_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.no_of_person"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.cost"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="m.total_cost"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <hr/>
+                            <p>
+                                <span t-field="o.desc"/>
+                            </p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <record id="construction_job_costing_report_id" model="ir.actions.report">
+            <field name="name">Job Costing</field>
+            <field name="model">job.costing</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.construction_job_costing_qweb_report</field>
+            <field name="report_file">construction_management.construction_job_costing_qweb_report</field>
+            <field name="binding_model_id" ref="model_job_costing"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'%s' %(object.name)</field>
+        </record>
+    </data>
+</flectra>

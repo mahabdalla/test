@@ -1,0 +1,697 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <template id="construction_project_detail_qweb_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                td {
+                                padding:5px;
+                                }
+                            </style>
+                            <center>
+                                <h3>
+                                    <span t-field="o.site_id.name"/>
+                                    -
+                                    <span t-field="o.name"/>
+                                </h3>
+                            </center>
+
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td>
+                                        Company
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <span t-field="o.customer_company_id.name"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h6>
+                                            Start Date
+                                        </h6>
+                                        <h4>
+                                            <strong>
+                                                <span t-field="o.start_date"/>
+                                            </strong>
+                                        </h4>
+                                    </td>
+                                    <td>
+                                        <h6>
+                                            End Date
+                                        </h6>
+                                        <h4>
+                                            <strong>
+                                                <span t-field="o.end_date"/>
+                                            </strong>
+                                        </h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h6>
+                                            Area Plot(sqft.)
+                                        </h6>
+                                        <h4>
+                                            <strong>
+                                                <span t-field="o.area_plot"/>
+                                            </strong>
+                                        </h4>
+                                    </td>
+                                    <td>
+                                        <h6>
+                                            Construction Rate
+                                        </h6>
+                                        <h4>
+                                            <strong>
+                                                <span t-field="o.construction_rate"/>
+                                            </strong>
+                                        </h4>
+                                    </td>
+                                    <td>
+                                        <h6>
+                                            Cost Of Construction
+                                        </h6>
+                                        <h4>
+                                            <strong>
+                                                <span t-field="o.cost_of_construction"/>
+                                            </strong>
+                                        </h4>
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr style="color: #20262E;border: 1px solid;"/>
+                            <t t-if="o.equipment_ids">
+                                <h5 style="background-color: #CEEDC7;">
+                                    â‍¤ Equipment
+                                </h5>
+                                <t t-foreach="o.equipment_ids" t-as="e">
+                                    <table style="width:100% ;margin-bottom:15px;border: 1px solid;">
+                                        <tr style="font-size:13px;background-color: #F0EEED;">
+                                            <td>
+                                                Title
+                                            </td>
+                                            <td>
+                                                Date
+                                            </td>
+                                            <td>
+                                                Purchase Order
+                                            </td>
+                                            <td>
+                                                Status
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size:13px;background-color: #F0EEED;">
+                                            <td>
+                                                <h6>
+                                                    <strong>
+                                                        <span t-field="e.name"/>
+                                                    </strong>
+                                                </h6>
+                                            </td>
+                                            <td>
+                                                <h6>
+                                                    <strong>
+                                                        <span t-field="e.date"/>
+                                                    </strong>
+                                                </h6>
+                                            </td>
+                                            <td>
+                                                <h6>
+                                                    <strong>
+                                                        <span t-field="e.equipment_po_id"/>
+                                                    </strong>
+                                                </h6>
+                                            </td>
+                                            <td>
+                                                <h6>
+                                                    <strong>
+                                                        <span t-field="e.state"/>
+                                                    </strong>
+                                                </h6>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" style="padding:0px;">
+                                                <table style="width:100%;font-size:13px;">
+                                                    <tr style="border-bottom: 1px solid #c3b7b7;border-top: 1px solid #c3b7b7;">
+                                                        <td>
+                                                            <strong>
+                                                                Equipment
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Qty.
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Cost
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Type
+                                                            </strong>
+                                                        </td>
+                                                    </tr>
+                                                    <t t-foreach="e.construction_equipment_ids" t-as="eq">
+                                                        <tr>
+                                                            <td>
+                                                                <span t-field="eq.equipment_id.name"/>
+                                                            </td>
+                                                            <td>
+                                                                <span t-field="eq.qty"/>
+                                                            </td>
+                                                            <td>
+                                                                <span t-field="eq.cost"/>
+                                                            </td>
+                                                            <td>
+                                                                <span t-field="eq.cost_type"/>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </t>
+                            </t>
+                            <t t-if="o.material_ids">
+                                <h5 style="background-color: #CEEDC7;">
+                                    â‍¤ Material
+                                </h5>
+                                <t t-foreach="o.material_ids" t-as="m">
+                                    <table style="width:100% ;margin-bottom:15px;border: 1px solid;">
+                                        <tr style="font-size:13px;background-color: #F0EEED;">
+                                            <td>
+                                                Title
+                                            </td>
+                                            <td>
+                                                Date
+                                            </td>
+                                            <td>
+                                                Purchase Order
+                                            </td>
+                                            <td>
+                                                Status
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size:13px;background-color: #F0EEED;">
+                                            <td>
+                                                <h6>
+                                                    <strong>
+                                                        <span t-field="m.name"/>
+                                                    </strong>
+                                                </h6>
+                                            </td>
+                                            <td>
+                                                <h6>
+                                                    <strong>
+                                                        <span t-field="m.date"/>
+                                                    </strong>
+                                                </h6>
+                                            </td>
+                                            <td>
+                                                <h6>
+                                                    <strong>
+                                                        <span t-field="m.material_po_id"/>
+                                                    </strong>
+                                                </h6>
+                                            </td>
+                                            <td>
+                                                <h6>
+                                                    <strong>
+                                                        <span t-field="m.state"/>
+                                                    </strong>
+                                                </h6>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" style="padding:0px;">
+                                                <table style="width:100%;font-size:13px;">
+                                                    <tr style="border-bottom: 1px solid #c3b7b7;border-top: 1px solid #c3b7b7;">
+                                                        <td>
+                                                            <strong>
+                                                                Material
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Unit of Measure
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Qty.
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Cost
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Total Cost
+                                                            </strong>
+                                                        </td>
+                                                    </tr>
+                                                    <t t-foreach="m.construction_material_ids" t-as="mt">
+                                                        <tr>
+                                                            <td>
+                                                                <span t-field="mt.material_id.name"/>
+                                                            </td>
+                                                            <td>
+                                                                <span t-field="mt.uom_id.name"/>
+                                                            </td>
+                                                            <td>
+                                                                <span t-field="mt.qty"/>
+                                                            </td>
+                                                            <td>
+                                                                <span t-field="mt.cost"/>
+                                                            </td>
+                                                            <td>
+                                                                <span t-field="mt.total_cost"/>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </t>
+
+                            </t>
+                            <t t-if="o.construction_labours_ids">
+                                <h5 style="background-color: #CEEDC7;">
+                                    â‍¤ Labours &amp; Workers
+                                </h5>
+                                <table style="width:100% ;margin-bottom:15px;border: 1px solid;">
+                                    <tr style="border-bottom: 1px solid #c3b7b7;background-color: #F0EEED;">
+                                        <td>Title</td>
+                                        <td>Date</td>
+                                        <td>Labour Responsible</td>
+                                        <td>Labours</td>
+                                        <td>Total Cost</td>
+                                        <td>Payment Status</td>
+                                    </tr>
+                                    <t t-foreach="o.construction_labours_ids" t-as="em">
+                                        <tr style="font-size:13px;">
+                                            <td>
+                                                <span t-field="em.title"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="em.date"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="em.labour_responsible_id.name"/>
+                                            </td>
+                                            <td>
+                                                <t t-foreach="em.labours_ids" t-as="l">
+                                                    <span>
+                                                        <span t-field="l.name"/>
+                                                        -<span t-field="l.charges"/>,
+                                                        <br/>
+                                                    </span>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <span t-field="em.total_labour_cost"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="em.payment_state"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+
+                            </t>
+<!--                            <t t-if="o.construction_engineer_ids">-->
+<!--                                <h5 style="background-color: #CEEDC7;">-->
+<!--                                    â‍¤ Engineer &amp; Architect-->
+<!--                                </h5>-->
+<!--                                <table style="width:100% ;margin-bottom:15px;border: 1px solid;">-->
+<!--                                    <tr style="border-bottom: 1px solid #c3b7b7;background-color: #F0EEED;">-->
+<!--                                        <td>Role</td>-->
+<!--                                        <td>Employee</td>-->
+<!--                                        <td>Date</td>-->
+<!--                                        <td>Note</td>-->
+<!--                                        <td>Charges</td>-->
+<!--                                        <td>Payment Status</td>-->
+<!--                                    </tr>-->
+<!--                                    <t t-foreach="o.construction_engineer_ids" t-as="ea">-->
+<!--                                        <tr style="font-size:13px;">-->
+<!--                                            <td>-->
+<!--                                                <span t-field="ea.role_id.name"/>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <span t-field="ea.employee_id"/>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <span t-field="ea.date"/>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <span t-field="ea.note"/>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <span t-field="ea.charges"/>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <span t-field="ea.payment_state"/>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+<!--                                    </t>-->
+<!--                                </table>-->
+
+<!--                            </t>-->
+                            <t t-if="o.document_ids">
+                                <h5 style="background-color: #CEEDC7;">
+                                    â‍¤ Documents Details
+                                </h5>
+                                <table style="width:100% ;margin-bottom:15px;border: 1px solid;">
+                                    <tr style="border-bottom: 1px solid #c3b7b7;background-color: #F0EEED;">
+                                        <td>Date</td>
+                                        <td>Type</td>
+                                        <td>Submitted By</td>
+                                        <td>State</td>
+                                    </tr>
+                                    <t t-foreach="o.document_ids" t-as="cd">
+                                        <tr style="font-size:13px;">
+                                            <td>
+                                                <span t-field="cd.date"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="cd.document_type.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="cd.submit_employee_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="cd.state"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+
+                            </t>
+                            <t t-if="o.construction_expense_ids">
+                                <h5 style="background-color: #CEEDC7;">
+                                    â‍¤ Extra Expense
+                                </h5>
+                                <table style="width:100% ;margin-bottom:15px;border: 1px solid;">
+                                    <tr style="border-bottom: 1px solid #c3b7b7;background-color: #F0EEED;">
+                                        <td>Expense</td>
+                                        <td>Date</td>
+                                        <td>Note</td>
+                                        <td>Cost</td>
+                                        <td>Bill</td>
+                                    </tr>
+                                    <t t-foreach="o.construction_expense_ids" t-as="ce">
+                                        <tr style="font-size:13px;">
+                                            <td>
+                                                <span t-field="ce.expense_product_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="ce.date"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="ce.note"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="ce.cost"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="ce.expense_bill_id"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+
+                            </t>
+                            <t t-if="o.risk_ids">
+                                <h5 style="background-color: #CEEDC7;">
+                                    â‍¤ Insurance &amp; Risk Management
+                                </h5>
+                                <t t-foreach="o.risk_ids" t-as="cr">
+                                    <t t-if="cr.is_insurance">
+                                        <table style="width:100% ;margin-bottom:15px;font-size:13px;border: 1px solid;">
+                                            <tr>
+                                                <td>
+                                                    <strong>Risk For</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.risk_type"/>
+                                                </td>
+                                                <td>
+                                                    <strong>Date</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.date"/>
+                                                </td>
+                                                <td>
+                                                    <strong>Note</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.note"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Policy No.</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.policy_no"/>
+                                                </td>
+                                                <td>
+                                                    <strong>Policy Name</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.policy_name"/>
+                                                </td>
+                                                <td>
+                                                    <strong>Charge</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.total_charge"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Issue Date</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.insurance_date"/>
+                                                </td>
+                                                <td>
+                                                    <strong>Issued By</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.issue_by"/>
+                                                </td>
+                                                <td>
+                                                    <strong>Risk Covered</strong>
+                                                </td>
+                                                <td>
+                                                    <t t-foreach="cr.risk_ids" t-as="ps">
+                                                        <span t-field="ps.name"/>,
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </t>
+                                    <t t-else="">
+                                        <table style="width:100% ;margin-bottom:15px;font-size:13px;border: 1px solid;">
+                                            <tr>
+                                                <td>
+                                                    <strong>Risk For</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.risk_type"/>
+                                                </td>
+                                                <td>
+                                                    <strong>Date</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.date"/>
+                                                </td>
+                                                <td>
+                                                    <strong>Note</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="cr.note"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </t>
+                                </t>
+                            </t>
+                            <p style="page-break-after:always;"/>
+                            <t t-if="o.project_id">
+                                <h5 style="background-color: #CEEDC7;">
+                                    â‍¤ Project Details
+                                </h5>
+                                <table style="width:100% ;margin-bottom:15px;border: 1px solid;">
+                                    <tr style="background-color: #F0EEED;">
+                                        <td colspan="2">
+                                            Name
+                                            <br/>
+                                            <strong>
+                                                <span t-field="o.project_id.name"/>
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            Start Date
+                                            <br/>
+                                            <strong>
+                                                <span t-field="o.project_id.date_start"/>
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            End Date
+                                            <br/>
+                                            <strong>
+                                                <span t-field="o.project_id.date"/>
+                                            </strong>
+                                        </td>
+                                        <td colspan="2">
+                                            Task Name
+                                            <br/>
+                                            <strong>
+                                                <span t-field="o.project_id.label_tasks"/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #c3b7b7;border-top: 1px solid #c3b7b7;">
+                                        <td colspan="6">
+                                            <center>
+                                                Task Details
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #c3b7b7;border-top: 1px solid #c3b7b7;background-color: #F0EEED;">
+                                        <td>
+                                            <strong>Name</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Assign Date</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Deadline</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Assignee</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Labours</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Stage</strong>
+                                        </td>
+                                    </tr>
+                                    <t t-foreach="o.project_id.task_ids" t-as="task">
+                                        <tr style="font-size:13px;">
+                                            <td>
+                                                <span t-field="task.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="task.date_assign"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="task.date_deadline"/>
+                                            </td>
+                                            <td>
+                                                <t t-set="assignee_names" t-value="[]"/>
+                                                <t t-if="task.user_id">
+                                                    <t t-set="assignee_names" t-value="assignee_names + [task.user_id.name]"/>
+                                                </t>
+                                                <t t-foreach="task.allowed_user_ids" t-as="allowed_user">
+                                                    <t t-if="not task.user_id or allowed_user.id != task.user_id.id">
+                                                        <t t-set="assignee_names" t-value="assignee_names + [allowed_user.name]"/>
+                                                    </t>
+                                                </t>
+                                                <span t-esc="', '.join(assignee_names)"/>
+                                            </td>
+                                            <td>
+                                                <t t-foreach="task.labours_ids" t-as="labour">
+                                                    <span>
+                                                        <span t-field="labour.name"/>,
+                                                    </span>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <span t-field="task.stage_id.name"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </t>
+                            <t t-if="o.scrap_id">
+                                <span>
+                                    <h5 style="background-color: #CEEDC7;">
+                                        â‍¤ Scrap Order -
+                                        <span t-field="o.scrap_id.name"/>
+                                    </h5>
+                                </span>
+                                <table style="width:100% ;margin-bottom:15px;border: 1px solid;">
+                                    <tr style="border-bottom: 1px solid #c3b7b7;border-top: 1px solid #c3b7b7;background-color: #F0EEED;">
+                                        <td>
+                                            <strong>Scrap of</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Product</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Qty.</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Value</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Total Value</strong>
+                                        </td>
+                                    </tr>
+                                    <t t-foreach="o.scrap_id.scrap_order_line_ids" t-as="s">
+                                        <tr style="font-size:13px;">
+                                            <td>
+                                                <span t-field="s.scrap_type"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="s.product_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="s.qty"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="s.dep_cost"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="s.net_total"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <record id="construction_site_details_report_id" model="ir.actions.report">
+            <field name="name">Project Details</field>
+            <field name="model">construction.details</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.construction_project_detail_qweb_report</field>
+            <field name="report_file">construction_management.construction_project_detail_qweb_report</field>
+            <field name="binding_model_id" ref="model_construction_details"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'%s' %(object.name)</field>
+        </record>
+    </data>
+</flectra>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data noupdate="1">
+        <record id="sequence_construction_site" model="ir.sequence">
+            <field name="name">Construction Sequence</field>
+            <field name="code">construction.details</field>
+            <field name="prefix">CS/%(year)s/%(month)s/%(day)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_job_costing" model="ir.sequence">
+            <field name="name">Job Costing Sequence</field>
+            <field name="code">job.costing</field>
+            <field name="prefix">JS/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_construction_scrap_order" model="ir.sequence">
+            <field name="name">Scrap Order Sequence</field>
+            <field name="code">scrap.order</field>
+            <field name="prefix">SCRAP/CS/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_progress_billing" model="ir.sequence">
+            <field name="name">Progress Billing Sequence</field>
+            <field name="code">construction.progress.billing</field>
+            <field name="prefix">PB/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_boq" model="ir.sequence">
+            <field name="name">BOQ Sequence</field>
+            <field name="code">construction.boq</field>
+            <field name="prefix">BOQ/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_work_order" model="ir.sequence">
+            <field name="name">Work Order Sequence</field>
+            <field name="code">construction.work.order</field>
+            <field name="prefix">WO/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_material_requisition" model="ir.sequence">
+            <field name="name">Material Requisition Sequence</field>
+            <field name="code">construction.material.requisition</field>
+            <field name="prefix">MREQ/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_subcontract" model="ir.sequence">
+            <field name="name">Subcontract Sequence</field>
+            <field name="code">construction.subcontract</field>
+            <field name="prefix">SUB/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_ra_billing" model="ir.sequence">
+            <field name="name">RA Billing Sequence</field>
+            <field name="code">construction.ra.billing</field>
+            <field name="prefix">RA/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_work_completion_certificate" model="ir.sequence">
+            <field name="name">Work Completion Certificate Sequence</field>
+            <field name="code">construction.work.completion.certificate</field>
+            <field name="prefix">WCC/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_consume_order" model="ir.sequence">
+            <field name="name">Consume Order Sequence</field>
+            <field name="code">construction.consume.order</field>
+            <field name="prefix">CONS/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="sequence_quality_check" model="ir.sequence">
+            <field name="name">Quality Check Sequence</field>
+            <field name="code">construction.quality.check</field>
+            <field name="prefix">QC/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</flectra>

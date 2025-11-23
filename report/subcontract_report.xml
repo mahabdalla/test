@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <template id="subcontract_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .info-table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-top: 20px;
+                                }
+                                .info-table td {
+                                    padding: 8px;
+                                    border: 1px solid #ddd;
+                                }
+                                .info-label {
+                                    font-weight: bold;
+                                    width: 30%;
+                                    background-color: #f2f2f2;
+                                }
+                                .summary-table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-top: 20px;
+                                }
+                                .summary-table th, .summary-table td {
+                                    border: 1px solid #ddd;
+                                    padding: 8px;
+                                    text-align: left;
+                                }
+                                .summary-table th {
+                                    background-color: #f2f2f2;
+                                    font-weight: bold;
+                                }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Subcontract Report</h2>
+                                    <table class="info-table">
+                                        <tr>
+                                            <td class="info-label">Subcontract Reference:</td>
+                                            <td><span t-field="o.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Sub Project:</td>
+                                            <td><span t-field="o.project_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Subcontractor:</td>
+                                            <td><span t-field="o.partner_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Subcontract Type:</td>
+                                            <td><span t-field="o.subcontract_type"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Date:</td>
+                                            <td><span t-field="o.date"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Status:</td>
+                                            <td><span t-field="o.state"/></td>
+                                        </tr>
+                                    </table>
+                                    <table class="summary-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Quantity</td>
+                                                <td><span t-field="o.quantity"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unit Price</td>
+                                                <td><span t-field="o.unit_price" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Subtotal</td>
+                                                <td><span t-field="o.subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Retention %</td>
+                                                <td><span t-field="o.retention_percent"/>%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Retention Amount</td>
+                                                <td><span t-field="o.retention_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                            <tr style="font-weight: bold; background-color: #e6e6e6;">
+                                                <td>Total Amount</td>
+                                                <td><span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div t-if="o.description" style="margin-top: 20px;">
+                                        <h3>Description:</h3>
+                                        <p t-field="o.description" t-options="{'widget': 'text'}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
+        <template id="ra_billing_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .info-table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-top: 20px;
+                                }
+                                .info-table td {
+                                    padding: 8px;
+                                    border: 1px solid #ddd;
+                                }
+                                .info-label {
+                                    font-weight: bold;
+                                    width: 30%;
+                                    background-color: #f2f2f2;
+                                }
+                                .summary-table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-top: 20px;
+                                }
+                                .summary-table th, .summary-table td {
+                                    border: 1px solid #ddd;
+                                    padding: 8px;
+                                    text-align: left;
+                                }
+                                .summary-table th {
+                                    background-color: #f2f2f2;
+                                    font-weight: bold;
+                                }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>RA Billing Report</h2>
+                                    <table class="info-table">
+                                        <tr>
+                                            <td class="info-label">RA Billing Reference:</td>
+                                            <td><span t-field="o.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Subcontract:</td>
+                                            <td><span t-field="o.subcontract_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Sub Project:</td>
+                                            <td><span t-field="o.project_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Subcontractor:</td>
+                                            <td><span t-field="o.partner_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Date:</td>
+                                            <td><span t-field="o.date"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Status:</td>
+                                            <td><span t-field="o.state"/></td>
+                                        </tr>
+                                    </table>
+                                    <table class="summary-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Completed Quantity</td>
+                                                <td><span t-field="o.completed_quantity"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unit Price</td>
+                                                <td><span t-field="o.unit_price" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Subtotal</td>
+                                                <td><span t-field="o.subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Retention %</td>
+                                                <td><span t-field="o.retention_percent"/>%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Retention Amount</td>
+                                                <td><span t-field="o.retention_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                            <tr style="font-weight: bold; background-color: #e6e6e6;">
+                                                <td>Total Amount</td>
+                                                <td><span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
+        <record id="action_report_subcontract" model="ir.actions.report">
+            <field name="name">Subcontract Report</field>
+            <field name="model">construction.subcontract</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.subcontract_report</field>
+            <field name="report_file">construction_management.subcontract_report</field>
+            <field name="print_report_name">'Subcontract - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_construction_subcontract"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_report_ra_billing" model="ir.actions.report">
+            <field name="name">RA Billing Report</field>
+            <field name="model">construction.ra.billing</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.ra_billing_report</field>
+            <field name="report_file">construction_management.ra_billing_report</field>
+            <field name="print_report_name">'RA Billing - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_construction_ra_billing"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</flectra>
+

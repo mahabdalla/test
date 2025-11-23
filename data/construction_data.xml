@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data noupdate="1">
+        <record id="construction_product_1" model="product.product">
+            <field name="name">Labour &amp; Construction Payment</field>
+            <field name="type">consu</field>
+        </record>
+        <record id="construction_product_2" model="product.product">
+            <field name="name">Engineer &amp; Architect Payment</field>
+            <field name="type">consu</field>
+        </record>
+        <record id="construction_product_3" model="product.product">
+            <field name="name">Construction Insurance</field>
+            <field name="type">service</field>
+        </record>
+    </data>
+</flectra>

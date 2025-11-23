@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flectra>
+    <data>
+        <template id="boq_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                .boq-table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-top: 20px;
+                                }
+                                .boq-table th, .boq-table td {
+                                    border: 1px solid #ddd;
+                                    padding: 8px;
+                                    text-align: left;
+                                }
+                                .boq-table th {
+                                    background-color: #f2f2f2;
+                                    font-weight: bold;
+                                }
+                                .total-row {
+                                    font-weight: bold;
+                                    background-color: #e6e6e6;
+                                }
+                            </style>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Bill of Quantity (BOQ)</h2>
+                                    <p><strong>Reference:</strong> <span t-field="o.name"/></p>
+                                    <p><strong>Project:</strong> <span t-field="o.project_id.name"/></p>
+                                    <p><strong>Date:</strong> <span t-field="o.create_date" t-options='{"widget": "date"}'/></p>
+                                </div>
+                            </div>
+                            <table class="boq-table">
+                                <thead>
+                                    <tr>
+                                        <th>Work Type</th>
+                                        <th>Work Subtype</th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Unit</th>
+                                        <th>Material</th>
+                                        <th>Equipment</th>
+                                        <th>Labor</th>
+                                        <th>Overhead</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <tr>
+                                            <td><span t-field="line.work_type_id.name"/></td>
+                                            <td><span t-field="line.work_subtype_id.name"/></td>
+                                            <td><span t-field="line.description"/></td>
+                                            <td><span t-field="line.quantity"/></td>
+                                            <td><span t-field="line.unit_id.name"/></td>
+                                            <td><span t-field="line.material_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            <td><span t-field="line.equipment_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            <td><span t-field="line.labor_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            <td><span t-field="line.overhead_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            <td><span t-field="line.total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        </tr>
+                                    </t>
+                                    <tr class="total-row">
+                                        <td colspan="5" style="text-align: right;"><strong>Total:</strong></td>
+                                        <td><span t-field="o.total_material" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        <td><span t-field="o.total_equipment" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        <td><span t-field="o.total_labor" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        <td><span t-field="o.total_overhead" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        <td><span t-field="o.total_budget" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
+        <record id="action_report_boq" model="ir.actions.report">
+            <field name="name">BOQ Report</field>
+            <field name="model">construction.boq</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">construction_management.boq_report</field>
+            <field name="report_file">construction_management.boq_report</field>
+            <field name="print_report_name">'BOQ - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_construction_boq"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</flectra>
+
